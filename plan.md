@@ -1,9 +1,9 @@
 ## Overall plan for chess program:
-Stage 1) Chessboard
-Stage 2) Movement (per piece, check validity)
-Stage 3) Evaluate position
-Stage 4) Turn-based game, with user input
-Stage 5) Minimal AI (random choice among greedy best moves, i.e. 1 ply)
+Stage 1) Chessboard\
+Stage 2) Movement (per piece, check validity)\
+Stage 3) Evaluate position\
+Stage 4) Turn-based game, with user input\
+Stage 5) Minimal AI (random choice among greedy best moves, i.e. 1 ply)\
 Stage 6) Minimax AI
 
 ## Stage 1)
