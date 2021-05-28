@@ -18,4 +18,9 @@ const char BBISHOP = 'b';
 const char BROOK = 'r';
 const char BPAWN = 'p';
 
+struct Coordinate[] get_valid_moves(struct Coordinate coord, char piece_type);
+
+
+
+
 #endif // PIECES_H
