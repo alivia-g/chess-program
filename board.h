@@ -24,4 +24,8 @@ char place_piece(char, char*, struct Board*);
 
 void initialize_board(struct Board*);
 
+void copy_board(struct Board*, struct Board*);
+
+bool validate_coord(struct Coordinate);
+
 #endif // BOARD_H

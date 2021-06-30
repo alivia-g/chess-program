@@ -7,94 +7,162 @@ struct MoveList {
 
 /**
 Parameters:
-    coord: coordinate of current piece
+    from: coordinate of current piece
     piece_type: current piece type
+    b: the game boards
 Return:
-    moves: an array of all valid moves that current piece can make
+    to: an array of all valid moves that current piece can go
 **/
-struct MoveList get_valid_moves(struct Coordinate coord, char piece_type, Board *b) {
-    struct MoveList moves;
+struct MoveList get_valid_moves(struct Coordinate from, char piece_type, Board *b) {
+    struct MoveList to;
 
     switch (piece_type) {
         case BKNIGHT:
         case WKNIGHT:
         {
-            moves.coord = (Coordinate*) malloc(8 * sizeof(Coordinate));
+            to.coord = (Coordinate*) malloc(8 * sizeof(Coordinate));
 
-            moves.coord[0].r = coord.r + 1
-            moves.coord[0].c = coord.c - 2
+            to.coord[0].r = from.r + 1;
+            to.coord[0].c = from.c - 2;
 
-            moves.coord[1].r = coord.r + 1
-            moves.coord[1].c = coord.c + 2
+            to.coord[1].r = from.r + 1;
+            to.coord[1].c = from.c + 2;
 
-            moves.coord[2].r = coord.r - 1
-            moves.coord[2].c = coord.c - 2
+            to.coord[2].r = from.r - 1;
+            to.coord[2].c = from.c - 2;
 
-            moves.coord[3].r = coord.r - 1
-            moves.coord[3].c = coord.c + 2
+            to.coord[3].r = from.r - 1;
+            to.coord[3].c = from.c + 2;
 
-            moves.coord[4].r = coord.r + 2
-            moves.coord[4].c = coord.c - 1
+            to.coord[4].r = from.r + 2;
+            to.coord[4].c = from.c - 1;
 
-            moves.coord[5].r = coord.r + 2
-            moves.coord[5].c = coord.c + 1
+            to.coord[5].r = from.r + 2;
+            to.coord[5].c = from.c + 1;
 
-            moves.coord[6].r = coord.r - 2
-            moves.coord[6].c = coord.c - 1
+            to.coord[6].r = from.r - 2;
+            to.coord[6].c = from.c - 1;
 
-            moves.coord[7].r = coord.r - 2
-            moves.coord[7].c = coord.c + 1
+            to.coord[7].r = from.r - 2;
+            to.coord[7].c = from.c + 1;
             break;
         }
         case BQUEEN:
         case WQUEEN:
         {
-            //todo
             break;
         }
         case BKING:
         case WKING:
         {
-            //todo
+            // TODO: implement castling
+            to.coord = (Coordinate*) malloc(8 * sizeof(Coordinate));
+            int i = 0;  // index counter for "to" array
+            for (int r = from.r - 1; r <= from.r + 1; ++r) {
+                for (int c = from.c - 1; c <= from.c + 1; ++c) {
+                    if ((r == from.r)&&(c == from.c)) {
+                        continue;
+                    } else {
+                        to.coord[i].r = r;
+                        to.coord[i].c = c;
+                        ++i;
+                    }
+                }
+            }
             break;
         }
         case BBISHOP:
         case WBISHOP:
         {
-            //todo
-            break;
-        }
-        case BROOK:
-        case WROOK:
-        {
-            moves.coord = (Coordinate*) malloc(14 * sizeof(Coordinate));
-            int i = 0;
-            for (int r = coord.r + 1; r < 8; ++r) {
-                moves.coord[i].r = r;
-                moves.coord[i].c = coord.c;
+            to.coord = (Coordinate*) malloc(13 * sizeof(Coordinate));
+            int i = 0;  // index counter for "to" array
+            // bishop moving left-up diagonal
+            for (int c = from.c - 1, r = from.r + 1; c >= 0, r < 8; --c, ++r) {
+                to.coord[i].r = r;
+                to.coord[i].c = c;
                 ++i;
-                if (b.squares[r][coord.c] != EMPTY) {
+                if (b.squares[r][c] != EMPTY) {
+                    break;
+                }
+            }
+            // bishop moving right-down diagonal
+            for (int c = from.c + 1, r = from.r - 1; c < 8, r >= 0; ++c, --r) {
+                to.coord[i].r = r;
+                to.coord[i].c = c;
+                ++i;
+                if (b.squares[r][c] != EMPTY) {
+                    break;
+                }
+            }
+            // bishop moving right-up diagonal
+            for (int d = 1; d + max(from.c, from.r) < 8; ++d) {
+                to.coord[i].r = from.r + d;
+                to.coord[i].c = from.c + d;
+                ++i;
+                if (b.squares[from.r + d][from.c + d] != EMPTY) {
                     break;
                 }
             }
             break;
         }
-        case BPAWN:{
+        case BROOK:
+        case WROOK:
+        {
+            to.coord = (Coordinate*) malloc(14 * sizeof(Coordinate));
+            int i = 0;  // index counter for "to" array
+            // rook moving ups
+            for (int r = from.r + 1; r < 8; ++r) {
+                to.coord[i].r = r;
+                to.coord[i].c = from.c;
+                ++i;
+                if (b.squares[r][from.c] != EMPTY) {
+                    break;
+                }
+            }
+            // rook moving down
+            for (int r = from.r - 1; r >= 0; --r) {
+                to.coord[i].r = r;
+                to.coord[i].c = from.c;
+                ++i;
+                if (b.squares[r][from.c] != EMPTY) {
+                    break;
+                }
+            }
+            // rook moving right
+            for (int c = from.c + 1; c < 8; ++c) {
+                to.coord[i].r = from.r;
+                to.coord[i].c = c;
+                ++i;
+                if (b.squares[from.r][c] != EMPTY) {
+                    break;
+                }
+            }
+            // rook moving left
+            for (int c = from.c - 1; c >= 0; --c) {
+                to.coord[i].r = from.r;
+                to.coord[i].c = c;
+                ++i;
+                if (b.squares[from.r][c] != EMPTY) {
+                    break;
+                }
+            }
+            break;
+        }
+        case BPAWN: {
             //todo
             break;
         }
-        case WPAWN:{
+        case WPAWN: {
             //todo
             break;
         }
-        case EMPTY:{
-            //todo
-            break;
+        case EMPTY:
+        default: {
+            to.length = 0;
+            to.coord = NULL;
         }
-        default:
-            moves.length = 0;
-            moves.coord = Null;
     }
 
     return moves;
 }
+
