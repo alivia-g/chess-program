@@ -24,4 +24,6 @@ Stage 6) Minimax AI
 
 ## Misc todo:
 Separate declarations from function definitions (implementation)
+En passant
+Castling
 
