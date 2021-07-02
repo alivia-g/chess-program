@@ -178,14 +178,40 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, Board *
             break;
         }
         case BPAWN: {
-            //todo
+            // TODO: en passant
+            to.coord = (Coordinate*) malloc(4 * sizeof(Coordinate));
+            int i = 0;  // index counter for "to" array
+            // black pawn moving down 1
+            if (b.squares[from.r - 1][from.c] == EMPTY) {
+                to.coord[i].r = from.r - 1;
+                to.coord[i].c = from.c;
+                ++i;
+                // check eligibility fro initial 2-steps option
+                if (from.r == 6 && b.squares[from.r - 2][from.c] == EMPTY) {
+                    to.coord[i].r = from.r - 2;
+                    to.coord[i].c = from.c;
+                    ++i;
+                }
+            }
+            // black pawn may eat the piece at its left-down diagonal
+            if (from.r - 1 >= 0 && from.c - 1 >= 0 && b.squares[from.r - 1][from.c - 1] != EMPTY) {
+                to.coord[i].r = from.r - 1;
+                to.coord[i].c = from.c - 1;
+                ++i;
+            }
+            // black pawn may eat the piece at its right-down diagonal
+            if (from.r - 1 >= 0 && from.c + 1 < 8 && b.squares[from.r - 1][from.c + 1] != EMPTY) {
+                to.coord[i].r = from.r - 1;
+                to.coord[i].c = from.c + 1;
+                ++i;
+            }
             break;
         }
         case WPAWN:
             // TODO: en passant
             to.coord = (Coordinate*) malloc(4 * sizeof(Coordinate));
             int i = 0;  // index counter for "to" array
-            // pawn moving up 1
+            // white pawn moving up 1
             if (b.squares[from.r + 1][from.c] == EMPTY)
                 to.coord[i].r = from.r + 1;
                 to.coord[i].c = from.c;
@@ -197,13 +223,13 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, Board *
                     ++i;
                 }
             }
-            // pawn may eat the piece at its left-up diagonal
+            // white pawn may eat the piece at its left-up diagonal
             if (from.r + 1 < 8 && from.c - 1 >= 0 && b.squares[from.r + 1][from.c - 1] != EMPTY) {
                 to.coord[i].r = from.r + 1;
                 to.coord[i].c = from.c - 1;
                 ++i;
             }
-            // pawn may eat the piece at its right-up diagonal
+            // white pawn may eat the piece at its right-up diagonal
             if (from.r + 1 < 8 && from.c + 1 < 8 && b.squares[from.r + 1][from.c + 1] != EMPTY) {
                 to.coord[i].r = from.r + 1;
                 to.coord[i].c = from.c + 1;
