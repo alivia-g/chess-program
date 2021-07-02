@@ -27,8 +27,7 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, Board *
 
     switch (piece_type) {
         case BKNIGHT:
-        case WKNIGHT:
-        {
+        case WKNIGHT: {
             to.coord = (Coordinate*) malloc(8 * sizeof(Coordinate));
 
             to.add_move(from.r + 1, from.c - 2);
@@ -42,15 +41,14 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, Board *
             break;
         }
         case BQUEEN:
-        case WQUEEN:
-        {
-            to.coord = (Coordinate*) malloc(8 * sizeof(Coordinate));
-
+        case WQUEEN: {
+            to.coord = (Coordinate*) malloc(27 * sizeof(Coordinate));
+            get_rook_moves(from, b, to);
+            get_bishop_moves(from, b, to);
             break;
         }
         case BKING:
-        case WKING:
-        {
+        case WKING: {
             // TODO: implement castling
             to.coord = (Coordinate*) malloc(8 * sizeof(Coordinate));
             for (int r = from.r - 1; r <= from.r + 1; ++r) {
@@ -65,9 +63,8 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, Board *
             break;
         }
         case BBISHOP:
-        case WBISHOP:
-        {
-            to.coord = (Coordinate*) malloc(13 * sizeof(Coordinate));
+        case WBISHOP: {
+            /*to.coord = (Coordinate*) malloc(13 * sizeof(Coordinate));
             // bishop moving left-up diagonal
             for (int c = from.c - 1, r = from.r + 1; c >= 0, r < 8; --c, ++r) {
                 to.add_move(r, c);
@@ -95,13 +92,14 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, Board *
                 if (b.squares[from.r - d][from.c - d] != EMPTY) {
                     break;
                 }
-            }
+            }*/
+            to.coord = (Coordinate*) malloc(13 * sizeof(Coordinate));
+            get_bishop_moves(from, b, to);
             break;
         }
         case BROOK:
-        case WROOK:
-        {
-            to.coord = (Coordinate*) malloc(14 * sizeof(Coordinate));
+        case WROOK: {
+            /*to.coord = (Coordinate*) malloc(14 * sizeof(Coordinate));
             // rook moving ups
             for (int r = from.r + 1; r < 8; ++r) {
                 to.add_move(r, from.c);
@@ -129,7 +127,9 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, Board *
                 if (b.squares[from.r][c] != EMPTY) {
                     break;
                 }
-            }
+            }*/
+            to.coord = (Coordinate*) malloc(14 * sizeof(Coordinate));
+            get_rook_moves(from, b, to);
             break;
         }
         case BPAWN: {
@@ -154,12 +154,12 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, Board *
             }
             break;
         }
-        case WPAWN:
+        case WPAWN: {
             // TODO: en passant
             to.coord = (Coordinate*) malloc(4 * sizeof(Coordinate));
 
             // white pawn moving up 1
-            if (b.squares[from.r + 1][from.c] == EMPTY)
+            if (b.squares[from.r + 1][from.c] == EMPTY) {
                 to.add_move(from.r + 1, from.c);
                 // check eligibility for initial 2-steps option
                 if (from.r == 1 && b.squares[from.r + 2][from.c] == EMPTY) {
@@ -182,7 +182,69 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, Board *
             to.coord = NULL;
         }
     }
-
-    return moves;
+    return to;
 }
 
+// function to get an array of valid bishop moves
+void get_bishop_moves(struct Coordinate from, Board *b, MoveList *to) {
+    // bishop moving left-up diagonal
+    for (int c = from.c - 1, r = from.r + 1; c >= 0, r < 8; --c, ++r) {
+        to.add_move(r, c);
+        if (b.squares[r][c] != EMPTY) {
+            break;
+        }
+    }
+    // bishop moving right-down diagonal
+    for (int c = from.c + 1, r = from.r - 1; c < 8, r >= 0; ++c, --r) {
+        to.add_move(r, c);
+        if (b.squares[r][c] != EMPTY) {
+            break;
+        }
+    }
+    // bishop moving right-up diagonal
+    for (int d = 1; d + max(from.c, from.r) < 8; ++d) {
+        to.add_move(from.r + d, from.c + d);
+        if (b.squares[from.r + d][from.c + d] != EMPTY) {
+            break;
+        }
+    }
+    // bishop moving left-down diagonal
+    for (int d = 1; max(from.c, from.r) - d >= 0; ++d) {
+        to.add_move(from.r - d, from.c - d);
+        if (b.squares[from.r - d][from.c - d] != EMPTY) {
+            break;
+        }
+    }
+}
+
+// function to get an array of valid rook moves
+void get_rook_moves(struct Coordinate from, Board *b, MoveList *to) {
+    // rook moving ups
+    for (int r = from.r + 1; r < 8; ++r) {
+        to.add_move(r, from.c);
+        if (b.squares[r][from.c] != EMPTY) {
+            break;
+        }
+    }
+    // rook moving down
+    for (int r = from.r - 1; r >= 0; --r) {
+        to.add_move(r, from.c);
+        if (b.squares[r][from.c] != EMPTY) {
+            break;
+        }
+    }
+    // rook moving right
+    for (int c = from.c + 1; c < 8; ++c) {
+        to.add_move(from.r, c);
+        if (b.squares[from.r][c] != EMPTY) {
+            break;
+        }
+    }
+    // rook moving left
+    for (int c = from.c - 1; c >= 0; --c) {
+        to.add_move(from.r, c);
+        if (b.squares[from.r][c] != EMPTY) {
+            break;
+        }
+    }
+}
