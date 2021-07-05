@@ -1,7 +1,11 @@
+#include <assert.h>
 #include <stdlib.h>
 
 #include "board.h"
 #include "pieces.h"
+
+#define min(x, y) (((x) < (y)) ? (x) : (y))
+#define max(x, y) (((x) > (y)) ? (x) : (y))
 
 void get_bishop_moves(struct Coordinate from, struct Board *b, struct MoveList *to);
 void get_rook_moves(struct Coordinate from, struct Board *b, struct MoveList *to);
@@ -16,7 +20,7 @@ Return:
 **/
 struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct Board *b) {
     struct MoveList to;
-    // to.initialize();
+    assert(to.length == 0);
 
     if (piece_type == BKNIGHT || piece_type == WKNIGHT) {
         to.coord = (struct Coordinate*) malloc(8 * sizeof(struct Coordinate));
@@ -49,68 +53,10 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct 
         }
     }
     if (piece_type == BBISHOP || piece_type == WBISHOP) {
-        /*to.coord = (Coordinate*) malloc(13 * sizeof(Coordinate));
-        // bishop moving left-up diagonal
-        for (int c = from.c - 1, r = from.r + 1; c >= 0, r < 8; --c, ++r) {
-            to.add_move(r, c);
-            if (b.squares[r][c] != EMPTY) {
-                break;
-            }
-        }
-        // bishop moving right-down diagonal
-        for (int c = from.c + 1, r = from.r - 1; c < 8, r >= 0; ++c, --r) {
-            to.add_move(r, c);
-            if (b.squares[r][c] != EMPTY) {
-                break;
-            }
-        }
-        // bishop moving right-up diagonal
-        for (int d = 1; d + max(from.c, from.r) < 8; ++d) {
-            to.add_move(from.r + d, from.c + d);
-            if (b.squares[from.r + d][from.c + d] != EMPTY) {
-                break;
-            }
-        }
-        // bishop moving left-down diagonal
-        for (int d = 1; max(from.c, from.r) - d >= 0; ++d) {
-            to.add_move(from.r - d, from.c - d);
-            if (b.squares[from.r - d][from.c - d] != EMPTY) {
-                break;
-            }
-        }*/
         to.coord = (struct Coordinate*) malloc(13 * sizeof(struct Coordinate));
         get_bishop_moves(from, b, &to);
     }
     if (piece_type == BROOK || piece_type == WROOK) {
-        /*to.coord = (Coordinate*) malloc(14 * sizeof(Coordinate));
-        // rook moving ups
-        for (int r = from.r + 1; r < 8; ++r) {
-            to.add_move(r, from.c);
-            if (b.squares[r][from.c] != EMPTY) {
-                break;
-            }
-        }
-        // rook moving down
-        for (int r = from.r - 1; r >= 0; --r) {
-            to.add_move(r, from.c);
-            if (b.squares[r][from.c] != EMPTY) {
-                break;
-            }
-        }
-        // rook moving right
-        for (int c = from.c + 1; c < 8; ++c) {
-            to.add_move(from.r, c);
-            if (b.squares[from.r][c] != EMPTY) {
-                break;
-            }
-        }
-        // rook moving left
-        for (int c = from.c - 1; c >= 0; --c) {
-            to.add_move(from.r, c);
-            if (b.squares[from.r][c] != EMPTY) {
-                break;
-            }
-        }*/
         to.coord = (struct Coordinate*) malloc(14 * sizeof(struct Coordinate));
         get_rook_moves(from, b, &to);
     }
