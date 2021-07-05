@@ -12,10 +12,6 @@ struct Board {
     char squares[8][8];
 };
 
-struct Coordinate {
-    int r, c;
-};
-
 void clear(struct Board*);
 
 struct Coordinate algebraic_to_coordinate(char*);
