@@ -6,8 +6,6 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "pieces.h"
-
 struct Board {
     char squares[8][8];
 };

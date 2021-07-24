@@ -1,0 +1,39 @@
+# depslib dependency file v1.0
+1627123578 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces_test.c
+	<stdio.h>
+	"pieces.h"
+	"ui.h"
+
+1627122088 d:\_shiro\cs\projects\chess\updated\chess-program\board.h
+	<assert.h>
+	<stdbool.h>
+	<ctype.h>
+	<string.h>
+
+1627122640 d:\_shiro\cs\projects\chess\updated\chess-program\pieces.h
+
+1627123556 d:\_shiro\cs\projects\chess\updated\chess-program\ui.h
+	<windows.h>
+	"board.h"
+
+1627122708 source:d:\_shiro\cs\projects\chess\updated\chess-program\board.c
+	"board.h"
+	"util.h"
+
+1623893038 source:d:\_shiro\cs\projects\chess\updated\chess-program\board_test.c
+	<stdio.h>
+	"board.h"
+	"ui.h"
+
+1627122714 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces.c
+	<assert.h>
+	<stdlib.h>
+	"board.h"
+	"pieces.h"
+	"util.h"
+
+1623893038 source:d:\_shiro\cs\projects\chess\updated\chess-program\ui.c
+	"ui.h"
+
+1627123526 d:\_shiro\cs\projects\chess\updated\chess-program\util.h
+

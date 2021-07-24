@@ -1,5 +1,7 @@
 #include "board.h"
 
+#include "util.h"
+
 void clear(struct Board *b) {
     for (int r = 0; r < 8; ++r) {
         for (int c = 0; c < 8; ++c) {

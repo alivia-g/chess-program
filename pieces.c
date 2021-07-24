@@ -3,9 +3,20 @@
 
 #include "board.h"
 #include "pieces.h"
+#include "util.h"
 
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 #define max(x, y) (((x) > (y)) ? (x) : (y))
+
+void initialize_movelist(struct MoveList *move_list) {
+    move_list->length = 0;
+}
+
+void add_move(struct MoveList *move_list, int r, int c) {
+    move_list->coord[move_list->length].r = r;
+    move_list->coord[move_list->length].c = c;
+    ++(move_list->length);
+}
 
 void get_bishop_moves(struct Coordinate from, struct Board *b, struct MoveList *to);
 void get_rook_moves(struct Coordinate from, struct Board *b, struct MoveList *to);
