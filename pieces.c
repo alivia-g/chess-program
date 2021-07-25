@@ -31,6 +31,7 @@ Return:
 **/
 struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct Board *b) {
     struct MoveList to;
+    initialize_movelist(&to);
     assert(to.length == 0);
 
     if (piece_type == BKNIGHT || piece_type == WKNIGHT) {
@@ -55,7 +56,7 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct 
         to.coord = (struct Coordinate*) malloc(8 * sizeof(struct Coordinate));
         for (int r = from.r - 1; r <= from.r + 1; ++r) {
             for (int c = from.c - 1; c <= from.c + 1; ++c) {
-                if ((r == from.r)&&(c == from.c)) {
+                if ((r == from.r) && (c == from.c)) {
                     continue;
                 } else {
                     add_move(&to, r, c);
@@ -116,6 +117,15 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct 
     if (piece_type == EMPTY) {
         to.length = 0;
         to.coord = NULL;
+    } else {
+        int marker = -1;  // marks the index of the right-most valid move in the "to" array
+        for (int i= 0; i < to.length; ++i) {
+            if (validate_coord(to.coord[i])) {
+                ++marker;
+                to.coord[marker] = to.coord[i];
+            }
+        }
+        to.length = marker + 1;
     }
     return to;
 }

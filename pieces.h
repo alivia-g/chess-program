@@ -2,7 +2,7 @@
 #define PIECES_H
 
 struct MoveList {
-    int length;
+    int length;  // number of elements in a movelist
     struct Coordinate* coord;
 };
 
@@ -12,7 +12,7 @@ void initialize_movelist(struct MoveList *move_list);
 
 void add_move(struct MoveList *move_list, int r, int c);
 
-// struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct Board *b);
+struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct Board *b);
 
 
 #endif // PIECES_H
