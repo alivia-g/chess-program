@@ -118,9 +118,10 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct 
         to.length = 0;
         to.coord = NULL;
     } else {
-        int marker = -1;  // marks the index of the right-most valid move in the "to" array
+        // boundary and own-piece-color check
+        int marker = -1;  // marks the index of right-most valid move in the "to" array
         for (int i= 0; i < to.length; ++i) {
-            if (validate_coord(to.coord[i])) {
+            if (validate_coord(to.coord[i]) && (get_color(b->squares[to.coord[i].r][to.coord[i].c]) != get_color(piece_type))) {
                 ++marker;
                 to.coord[marker] = to.coord[i];
             }

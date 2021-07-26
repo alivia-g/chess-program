@@ -73,3 +73,15 @@ void copy_board(struct Board* b1, struct Board* b2) {
 bool validate_coord(struct Coordinate coord) {
     return (coord.r >= 0)&&(coord.r <= 7)&&(coord.c >= 0)&&(coord.c <= 7);
 }
+
+char get_color(char piece_type) {
+    if (piece_type == EMPTY) {
+        return 0;  // 0 for empty
+    } else if (('A' <= piece_type) && (piece_type <= 'Z')) {
+        return 1;  // 1 for white pieces
+    } else if (('a' <= piece_type) && (piece_type <= 'z')) {
+        return -1;  // -1 for black pieces
+    } else {
+        return -2;  // -2 for all other characters
+    }
+}

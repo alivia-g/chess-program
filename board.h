@@ -22,4 +22,6 @@ void copy_board(struct Board*, struct Board*);
 
 bool validate_coord(struct Coordinate);
 
+char get_color(char);
+
 #endif // BOARD_H
