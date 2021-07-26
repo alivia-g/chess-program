@@ -134,28 +134,28 @@ struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct 
 void get_bishop_moves(struct Coordinate from, struct Board *b, struct MoveList *to) {
     // bishop moving left-up diagonal
     for (int c = from.c - 1, r = from.r + 1; c >= 0, r < 8; --c, ++r) {
-        add_move(&to, r, c);
+        add_move(to, r, c);
         if (b->squares[r][c] != EMPTY) {
             break;
         }
     }
     // bishop moving right-down diagonal
     for (int c = from.c + 1, r = from.r - 1; c < 8, r >= 0; ++c, --r) {
-        add_move(&to, r, c);
+        add_move(to, r, c);
         if (b->squares[r][c] != EMPTY) {
             break;
         }
     }
     // bishop moving right-up diagonal
     for (int d = 1; d + max(from.c, from.r) < 8; ++d) {
-        add_move(&to, from.r + d, from.c + d);
+        add_move(to, from.r + d, from.c + d);
         if (b->squares[from.r + d][from.c + d] != EMPTY) {
             break;
         }
     }
     // bishop moving left-down diagonal
     for (int d = 1; max(from.c, from.r) - d >= 0; ++d) {
-        add_move(&to, from.r - d, from.c - d);
+        add_move(to, from.r - d, from.c - d);
         if (b->squares[from.r - d][from.c - d] != EMPTY) {
             break;
         }
@@ -166,28 +166,28 @@ void get_bishop_moves(struct Coordinate from, struct Board *b, struct MoveList *
 void get_rook_moves(struct Coordinate from, struct Board *b, struct MoveList *to) {
     // rook moving ups
     for (int r = from.r + 1; r < 8; ++r) {
-        add_move(&to, r, from.c);
+        add_move(to, r, from.c);
         if (b->squares[r][from.c] != EMPTY) {
             break;
         }
     }
     // rook moving down
     for (int r = from.r - 1; r >= 0; --r) {
-        add_move(&to, r, from.c);
+        add_move(to, r, from.c);
         if (b->squares[r][from.c] != EMPTY) {
             break;
         }
     }
     // rook moving right
     for (int c = from.c + 1; c < 8; ++c) {
-        add_move(&to, from.r, c);
+        add_move(to, from.r, c);
         if (b->squares[from.r][c] != EMPTY) {
             break;
         }
     }
     // rook moving left
     for (int c = from.c - 1; c >= 0; --c) {
-        add_move(&to, from.r, c);
+        add_move(to, from.r, c);
         if (b->squares[from.r][c] != EMPTY) {
             break;
         }

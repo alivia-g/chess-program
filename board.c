@@ -1,5 +1,5 @@
 #include "board.h"
-
+#include <stdio.h>
 #include "util.h"
 
 void clear(struct Board *b) {
@@ -11,6 +11,7 @@ void clear(struct Board *b) {
 }
 
 struct Coordinate algebraic_to_coordinate(char *pos) {
+    printf("%s\n", pos);
     assert(strlen(pos) == 2);
     struct Coordinate coord;
     coord.r = pos[1] - '1';

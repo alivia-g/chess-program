@@ -10,14 +10,15 @@
 	<ctype.h>
 	<string.h>
 
-1627122640 d:\_shiro\cs\projects\chess\updated\chess-program\pieces.h
+1627193244 d:\_shiro\cs\projects\chess\updated\chess-program\pieces.h
 
 1627123556 d:\_shiro\cs\projects\chess\updated\chess-program\ui.h
 	<windows.h>
 	"board.h"
 
-1627122708 source:d:\_shiro\cs\projects\chess\updated\chess-program\board.c
+1627270248 source:d:\_shiro\cs\projects\chess\updated\chess-program\board.c
 	"board.h"
+	<stdio.h>
 	"util.h"
 
 1623893038 source:d:\_shiro\cs\projects\chess\updated\chess-program\board_test.c
@@ -25,7 +26,7 @@
 	"board.h"
 	"ui.h"
 
-1627122714 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces.c
+1627272130 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces.c
 	<assert.h>
 	<stdlib.h>
 	"board.h"
@@ -36,4 +37,11 @@
 	"ui.h"
 
 1627123526 d:\_shiro\cs\projects\chess\updated\chess-program\util.h
+
+1627271106 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces_tester.c
+	<stdio.h>
+	"board.h"
+	"pieces.h"
+	"ui.h"
+	"util.h"
 
