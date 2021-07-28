@@ -4,6 +4,7 @@
 #include <windows.h>
 
 #include "board.h"
+#include "player.h"
 
 /// stolen from Cody Gray https://stackoverflow.com/users/366904/cody-gray
 /// From StackOverflow
@@ -15,6 +16,6 @@ static const int BLACK_FOREGROUND = 0;
 static const int GRAY_BACKGROUND = BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE;
 static const int SILVER_BACKGROUND = BACKGROUND_INTENSITY;
 
-void display_board(struct Board* b);
+void display_board(struct Board* b, enum player_color player);
 
 #endif // UI_H

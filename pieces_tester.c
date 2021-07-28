@@ -5,12 +5,14 @@
 #include "ui.h"
 #include "util.h"
 
+const enum player_color CURRENT_PLAYER = black;
+
 int main() {
     // create board
     struct Board b;
     clear(&b);
-    // initialize_board(&b);
-    display_board(&b);
+    initialize_board(&b);
+    display_board(&b, CURRENT_PLAYER);
     while(1) {
         // enter a piece
         char piece_type;
@@ -29,7 +31,7 @@ int main() {
 
         // place piece on board
         place_piece(piece_type, pos, &b);
-        display_board(&b);
+        display_board(&b, CURRENT_PLAYER);
         // validate piece's possible moves, return list of valid moves
         struct Coordinate coord = algebraic_to_coordinate(pos);
         struct MoveList valid_moves = get_valid_moves(coord, piece_type, &b);

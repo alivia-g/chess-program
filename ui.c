@@ -1,7 +1,18 @@
 #include "ui.h"
+#include "player.h"
 
-void display_board(struct Board* b) {
-    for (int r = 0; r < 8; ++r) {
+void display_board(struct Board* b, enum player_color player) {
+    int start, end, increment;
+    if (player == black) {
+        start = 0;
+        end = 8;
+        increment = 1;
+    } else if (player == white) {
+        start = 7;
+        end = -1;
+        increment = -1;
+    }
+    for (int r = start; r != end; r = r + increment) {
         for (int c = 0; c < 8; ++c) {
             int foreground = 0, background = 0;
 

@@ -1,6 +1,9 @@
 #include "board.h"
+
 #include <stdio.h>
+
 #include "util.h"
+#include "player.h"
 
 void clear(struct Board *b) {
     for (int r = 0; r < 8; ++r) {
@@ -11,7 +14,6 @@ void clear(struct Board *b) {
 }
 
 struct Coordinate algebraic_to_coordinate(char *pos) {
-    printf("%s\n", pos);
     assert(strlen(pos) == 2);
     struct Coordinate coord;
     coord.r = pos[1] - '1';
@@ -76,12 +78,12 @@ bool validate_coord(struct Coordinate coord) {
 
 char get_color(char piece_type) {
     if (piece_type == EMPTY) {
-        return 0;  // 0 for empty
+        return none;
     } else if (('A' <= piece_type) && (piece_type <= 'Z')) {
-        return 1;  // 1 for white pieces
+        return white;
     } else if (('a' <= piece_type) && (piece_type <= 'z')) {
-        return -1;  // -1 for black pieces
+        return black;
     } else {
-        return -2;  // -2 for all other characters
+        return none;
     }
 }
