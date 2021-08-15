@@ -10,7 +10,10 @@
 	<ctype.h>
 	<string.h>
 
-1627193244 d:\_shiro\cs\projects\chess\updated\chess-program\pieces.h
+1629016224 d:\_shiro\cs\projects\chess\updated\chess-program\pieces.h
+	"board.h"
+	"player.h"
+	"util.h"
 
 1627466788 d:\_shiro\cs\projects\chess\updated\chess-program\ui.h
 	<windows.h>
@@ -28,25 +31,30 @@
 	"board.h"
 	"ui.h"
 
-1627279262 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces.c
+1629015986 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces.c
 	<assert.h>
 	<stdlib.h>
 	"board.h"
 	"pieces.h"
+	"player.h"
 	"util.h"
 
 1627467224 source:d:\_shiro\cs\projects\chess\updated\chess-program\ui.c
 	"ui.h"
 	"player.h"
 
-1627123526 d:\_shiro\cs\projects\chess\updated\chess-program\util.h
+1629015652 d:\_shiro\cs\projects\chess\updated\chess-program\util.h
+	"stdbool.h"
 
-1627467150 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces_tester.c
+1629013874 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces_tester.c
 	<stdio.h>
 	"board.h"
 	"pieces.h"
 	"ui.h"
 	"util.h"
 
-1627466120 d:\_shiro\cs\projects\chess\updated\chess-program\player.h
+1629014076 d:\_shiro\cs\projects\chess\updated\chess-program\player.h
+
+1629015530 source:d:\_shiro\cs\projects\chess\updated\chess-program\util.c
+	"util.h"
 

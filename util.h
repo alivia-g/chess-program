@@ -1,6 +1,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include "stdbool.h"
+
 static const char EMPTY = ' ';
 
 // white pieces
@@ -21,5 +23,7 @@ static const char BPAWN = 'p';
 struct Coordinate {
     int r, c;
 };
+
+bool coords_equal(struct Coordinate, struct Coordinate);
 
 #endif  // UTIL_H

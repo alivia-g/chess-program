@@ -3,6 +3,7 @@
 
 #include "board.h"
 #include "pieces.h"
+#include "player.h"
 #include "util.h"
 
 #define min(x, y) (((x) < (y)) ? (x) : (y))
@@ -193,4 +194,43 @@ void get_rook_moves(struct Coordinate from, struct Board *b, struct MoveList *to
             break;
         }
     }
+}
+
+// check if a player's King is under check
+// TODO: keep track of each piece that is under attack
+bool is_king_in_check(struct Board *b, enum player_color pcolor) {
+    char king_type = 0;
+    assert((king_type == black) || (king_type == white));
+    if (pcolor == black) { king_type = 'k'; }
+    else if (pcolor == white) { king_type = 'K'; }
+
+    struct Coordinate king_coord;
+    for (int r = 0; r < 8; ++r) {
+        for (int c = 0; c < 8; ++c) {
+            if (b->squares[r][c] == king_type) {
+                king_coord.r = r;
+                king_coord.c = c;
+                break;
+            }
+        }
+    }
+    // iterate through the board pieces
+    for (int r = 0; r < 8; ++r) {
+        for (int c = 0; c < 8; ++c) {
+            if (get_color(b->squares[r][c]) != pcolor) {
+                // get valid moves of current piece
+                struct Coordinate coord;
+                coord.r = r;
+                coord.c = c;
+
+                struct MoveList valid_moves = get_valid_moves(coord, b->squares[r][c], b);
+
+                // check if the coordinate of the pcolor's King is contained in valid_moves
+                for (int i = 0; i < valid_moves.length; ++i) {
+                    if (coords_equal(king_coord, valid_moves.coord[i])) { return true; }  // King is under check
+                }
+            }
+        }
+    }
+    return false;  // King is not under check
 }
