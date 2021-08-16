@@ -5,13 +5,13 @@
 #include "ui.h"
 #include "util.h"
 
-const enum player_color CURRENT_PLAYER = black;
+const enum player_color CURRENT_PLAYER = white;
 
 int main() {
     // create board
     struct Board b;
     clear(&b);
-    initialize_board(&b);
+    //initialize_board(&b);
     display_board(&b, CURRENT_PLAYER);
     while(1) {
         // enter a piece
@@ -41,6 +41,8 @@ int main() {
             //place_piece(piece_type, valid_moves.coord[i], &b);
             printf("%d,%d\n", valid_moves.coord[i].r, valid_moves.coord[i].c);
         }
+        if (is_king_in_check(&b, black)) { printf("The black King is under check! Be careful.\n"); }
+        if (is_king_in_check(&b, white)) { printf("The white King is under check! Be careful.\n"); }
     }
     return 0;
 }

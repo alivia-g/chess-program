@@ -31,6 +31,40 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../board.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="../board.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="../pieces.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="../pieces.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="../pieces_tester.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="../player.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="../ui.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="../ui.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="../util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../util.h">
+			<Option target="Debug" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
