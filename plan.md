@@ -26,9 +26,3 @@ Stage 6) Minimax AI
 1. Determine if a player is under checkmate or stalemate
 1. Assign a value to each piece
 2. Calculate a value for a position (checkmate is infinite, stalemate is zero)
-
-## Misc todo:
-Separate declarations from function definitions (implementation)
-En passant
-Castling
-
