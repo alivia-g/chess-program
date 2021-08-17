@@ -30,15 +30,16 @@ int main() {
         //printf("\nposition: %s", pos);
 
         // place piece on board
-        place_piece(piece_type, pos, &b);
+        char old_piece = place_piece_with_algebraic_position(piece_type, pos, &b);
+        //
         display_board(&b, CURRENT_PLAYER);
         // validate piece's possible moves, return list of valid moves
         struct Coordinate coord = algebraic_to_coordinate(pos);
-        struct MoveList valid_moves = get_potential_moves(coord, piece_type, &b);
+        struct MoveList valid_moves = get_valid_moves(coord, piece_type, &b);
         printf("Number of valid moves: %d\n", valid_moves.length);
         printf("Valid moves are:\n");
         for (int i = 0; i < valid_moves.length; ++i) {
-            //place_piece(piece_type, valid_moves.coord[i], &b);
+            //place_piece_with_algebraic_position(piece_type, valid_moves.coord[i], &b);
             printf("%d,%d\n", valid_moves.coord[i].r, valid_moves.coord[i].c);
         }
         if (is_king_in_check(&b, black)) { printf("The black King is under check! Be careful.\n"); }

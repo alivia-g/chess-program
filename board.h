@@ -14,7 +14,9 @@ void clear(struct Board*);
 
 struct Coordinate algebraic_to_coordinate(char*);
 
-char place_piece(char, char*, struct Board*);
+char place_piece_with_algebraic_position(char, char*, struct Board*);
+
+char place_piece_on_coordinate(char, struct Coordinate, struct Board*);
 
 void initialize_board(struct Board*);
 

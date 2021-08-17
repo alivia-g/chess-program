@@ -21,7 +21,7 @@ struct Coordinate algebraic_to_coordinate(char *pos) {
     return coord;
 };
 
-char place_piece(char piece, char *pos, struct Board *b) {
+char place_piece_with_algebraic_position(char piece, char *pos, struct Board *b) {
     struct Coordinate coord = algebraic_to_coordinate(pos);
     char old_piece = b->squares[coord.r][coord.c];
     // place piece on board
@@ -29,36 +29,43 @@ char place_piece(char piece, char *pos, struct Board *b) {
     return old_piece;
 }
 
-void initialize_board(struct Board* b) {
-    place_piece(BROOK, "a8", b);
-    place_piece(BKNIGHT, "b8", b);
-    place_piece(BBISHOP, "c8", b);
-    place_piece(BQUEEN, "d8", b);
-    place_piece(BKING, "e8", b);
-    place_piece(BBISHOP, "f8", b);
-    place_piece(BKNIGHT, "g8", b);
-    place_piece(BROOK, "h8", b);
+char place_piece_on_coordinate(char piece, struct Coordinate coord, struct Board *b) {
+    char old_piece = b->squares[coord.r][coord.c];
+    // place piece on board
+    b->squares[coord.r][coord.c] = piece;
+    return old_piece;
+}
 
-    place_piece(WROOK, "a1", b);
-    place_piece(WKNIGHT, "b1", b);
-    place_piece(WBISHOP, "c1", b);
-    place_piece(WQUEEN, "d1", b);
-    place_piece(WKING, "e1", b);
-    place_piece(WBISHOP, "f1", b);
-    place_piece(WKNIGHT, "g1", b);
-    place_piece(WROOK, "h1", b);
+void initialize_board(struct Board* b) {
+    place_piece_with_algebraic_position(BROOK, "a8", b);
+    place_piece_with_algebraic_position(BKNIGHT, "b8", b);
+    place_piece_with_algebraic_position(BBISHOP, "c8", b);
+    place_piece_with_algebraic_position(BQUEEN, "d8", b);
+    place_piece_with_algebraic_position(BKING, "e8", b);
+    place_piece_with_algebraic_position(BBISHOP, "f8", b);
+    place_piece_with_algebraic_position(BKNIGHT, "g8", b);
+    place_piece_with_algebraic_position(BROOK, "h8", b);
+
+    place_piece_with_algebraic_position(WROOK, "a1", b);
+    place_piece_with_algebraic_position(WKNIGHT, "b1", b);
+    place_piece_with_algebraic_position(WBISHOP, "c1", b);
+    place_piece_with_algebraic_position(WQUEEN, "d1", b);
+    place_piece_with_algebraic_position(WKING, "e1", b);
+    place_piece_with_algebraic_position(WBISHOP, "f1", b);
+    place_piece_with_algebraic_position(WKNIGHT, "g1", b);
+    place_piece_with_algebraic_position(WROOK, "h1", b);
 
     // place black pawns
     for (char f = 'a'; f <= 'h'; ++f) {
         char s[3] = "a2";
         s[0] = f;
-        place_piece(WPAWN, s, b);
+        place_piece_with_algebraic_position(WPAWN, s, b);
     }
     // place white pawns
     for (char f = 'a'; f <= 'h'; ++f) {
         char s[3] = "a7";
         s[0] = f;
-        place_piece(BPAWN, s, b);
+        place_piece_with_algebraic_position(BPAWN, s, b);
     }
 }
 

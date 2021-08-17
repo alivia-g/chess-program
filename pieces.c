@@ -118,17 +118,8 @@ struct MoveList get_potential_moves(struct Coordinate from, char piece_type, str
     if (piece_type == EMPTY) {
         to.length = 0;
         to.coord = NULL;
-    } else {
-        // boundary and own-piece-color check
-        int marker = -1;  // marks the index of right-most valid move in the "to" array
-        for (int i= 0; i < to.length; ++i) {
-            if (validate_coord(to.coord[i]) && (get_color(b->squares[to.coord[i].r][to.coord[i].c]) != get_color(piece_type))) {
-                ++marker;
-                to.coord[marker] = to.coord[i];
-            }
-        }
-        to.length = marker + 1;
     }
+
     return to;
 }
 
@@ -233,4 +224,45 @@ bool is_king_in_check(struct Board *b, enum player_color pcolor) {
         }
     }
     return false;  // King is not under check
+}
+
+// helper function to check if a potential move is valid
+bool is_move_valid(char piece_type, struct Coordinate from, struct Coordinate to, struct Board *b) {
+    // boundary check
+    if (!validate_coord(to)) { return false; }
+    // own-piece-color check
+    if (get_color(b->squares[to.r][to.c]) == get_color(piece_type)) { return false; }
+
+    // move the piece to a potential position
+    char captured_piece = place_piece_on_coordinate(piece_type, to, b);
+    // remove the piece at "from" position
+    place_piece_on_coordinate(EMPTY, from, b);
+
+    bool valid = true;
+    // check if the King would be in check after moving the piece to the potential position
+    if (is_king_in_check(b, get_color(piece_type))) { valid = false; }
+
+    // restore the captured piece back to its original position
+    place_piece_on_coordinate(captured_piece, to, b);
+    // restore the piece back to its original position
+    place_piece_on_coordinate(piece_type, from, b);
+
+    return valid;
+}
+
+// gets a list of valid moves for a piece at a coordinate on the board
+struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct Board *b) {
+
+    struct MoveList moves = get_potential_moves(from, piece_type, b);
+
+    // filter potential moves array to remove invalid moves
+    int ptr = 0;  // marks the index of right-most valid move in moves array
+    for (int i = 0; i < moves.length; ++i) {
+        if (is_move_valid(piece_type, from, moves.coord[i], b)) {
+            moves.coord[ptr] = moves.coord[i];
+            ++ptr;
+        }
+    }
+    moves.length = ptr;
+    return moves;
 }
