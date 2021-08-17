@@ -30,7 +30,7 @@ Parameters:
 Return:
     to: an array of all valid moves that current piece can go
 **/
-struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct Board *b) {
+struct MoveList get_potential_moves(struct Coordinate from, char piece_type, struct Board *b) {
     struct MoveList to;
     initialize_movelist(&to);
     assert(to.length == 0);
@@ -223,7 +223,7 @@ bool is_king_in_check(struct Board *b, enum player_color pcolor) {
                 coord.r = r;
                 coord.c = c;
 
-                struct MoveList valid_moves = get_valid_moves(coord, b->squares[r][c], b);
+                struct MoveList valid_moves = get_potential_moves(coord, b->squares[r][c], b);
 
                 // check if the coordinate of the pcolor's King is contained in valid_moves
                 for (int i = 0; i < valid_moves.length; ++i) {

@@ -34,7 +34,7 @@ int main() {
         display_board(&b, CURRENT_PLAYER);
         // validate piece's possible moves, return list of valid moves
         struct Coordinate coord = algebraic_to_coordinate(pos);
-        struct MoveList valid_moves = get_valid_moves(coord, piece_type, &b);
+        struct MoveList valid_moves = get_potential_moves(coord, piece_type, &b);
         printf("Number of valid moves: %d\n", valid_moves.length);
         printf("Valid moves are:\n");
         for (int i = 0; i < valid_moves.length; ++i) {
