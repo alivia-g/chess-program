@@ -30,7 +30,8 @@ Parameters:
 Return:
     to: an array of all valid moves that current piece can go
 **/
-struct MoveList get_potential_moves(struct Coordinate from, char piece_type, struct Board *b) {
+struct MoveList get_potential_moves(struct Coordinate from, struct Board *b) {
+    char piece_type = b->squares[from.r][from.c];
     struct MoveList to;
     initialize_movelist(&to);
     assert(to.length == 0);
@@ -214,7 +215,7 @@ bool is_king_in_check(struct Board *b, enum player_color pcolor) {
                 coord.r = r;
                 coord.c = c;
 
-                struct MoveList valid_moves = get_potential_moves(coord, b->squares[r][c], b);
+                struct MoveList valid_moves = get_potential_moves(coord, b);
 
                 // check if the coordinate of the pcolor's King is contained in valid_moves
                 for (int i = 0; i < valid_moves.length; ++i) {
@@ -227,7 +228,8 @@ bool is_king_in_check(struct Board *b, enum player_color pcolor) {
 }
 
 // helper function to check if a potential move is valid
-bool is_move_valid(char piece_type, struct Coordinate from, struct Coordinate to, struct Board *b) {
+bool is_move_valid(struct Coordinate from, struct Coordinate to, struct Board *b) {
+    char piece_type = b->squares[from.r][from.c];
     // boundary check
     if (!validate_coord(to)) { return false; }
     // own-piece-color check
@@ -251,14 +253,15 @@ bool is_move_valid(char piece_type, struct Coordinate from, struct Coordinate to
 }
 
 // gets a list of valid moves for a piece at a coordinate on the board
-struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct Board *b) {
+struct MoveList get_valid_moves(struct Coordinate from, struct Board *b) {
+    char piece_type = b->squares[from.r][from.c];
 
-    struct MoveList moves = get_potential_moves(from, piece_type, b);
+    struct MoveList moves = get_potential_moves(from, b);
 
     // filter potential moves array to remove invalid moves
     int ptr = 0;  // marks the index of right-most valid move in moves array
     for (int i = 0; i < moves.length; ++i) {
-        if (is_move_valid(piece_type, from, moves.coord[i], b)) {
+        if (is_move_valid(from, moves.coord[i], b)) {
             moves.coord[ptr] = moves.coord[i];
             ++ptr;
         }

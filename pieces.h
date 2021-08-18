@@ -16,7 +16,7 @@ void initialize_movelist(struct MoveList *move_list);
 
 void add_move(struct MoveList *move_list, int r, int c);
 
-struct MoveList get_valid_moves(struct Coordinate from, char piece_type, struct Board *b);
+struct MoveList get_valid_moves(struct Coordinate from, struct Board *b);
 
 bool is_king_in_check(struct Board *b, enum player_color pcolor);
 
