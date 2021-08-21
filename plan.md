@@ -24,5 +24,7 @@ Stage 6) Minimax AI
 
 ## Stage 3)
 1. Determine if a player is under checkmate or stalemate
-1. Assign a value to each piece
-2. Calculate a value for a position (checkmate is infinite, stalemate is zero)
+2. Assign a value to each piece
+3. Calculate a value for a position (checkmate is infinite, stalemate is zero)
+4. Bonus: 3-move repetition
+5. Bonus: 50-move rule
