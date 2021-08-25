@@ -14,6 +14,10 @@ void initialize_movelist(struct MoveList *move_list) {
 }
 
 void add_move(struct MoveList *move_list, int r, int c) {
+    struct Coordinate coord;
+    coord.r = r;
+    coord.c = c;
+    assert(validate_coord(coord));
     move_list->coord[move_list->length].r = r;
     move_list->coord[move_list->length].c = c;
     ++(move_list->length);
@@ -148,7 +152,7 @@ void get_bishop_moves(struct Coordinate from, struct Board *b, struct MoveList *
         }
     }
     // bishop moving left-down diagonal
-    for (int d = 1; max(from.c, from.r) - d >= 0; ++d) {
+    for (int d = 1; min(from.c, from.r) - d >= 0; ++d) {
         add_move(to, from.r - d, from.c - d);
         if (b->squares[from.r - d][from.c - d] != EMPTY) {
             break;
@@ -197,6 +201,9 @@ bool is_king_in_check(struct Board *b, enum player_color pcolor) {
     else if (pcolor == white) { king_type = 'K'; }
 
     struct Coordinate king_coord;
+    king_coord.r = -1;  // initialization is important
+    king_coord.c = -1;
+
     for (int r = 0; r < 8; ++r) {
         for (int c = 0; c < 8; ++c) {
             if (b->squares[r][c] == king_type) {
@@ -206,6 +213,10 @@ bool is_king_in_check(struct Board *b, enum player_color pcolor) {
             }
         }
     }
+
+    // if no King present on board, return false directly
+    if ((king_coord.r < 0) || (king_coord.c < 0)) { return false; }
+
     // iterate through the board pieces
     for (int r = 0; r < 8; ++r) {
         for (int c = 0; c < 8; ++c) {
@@ -255,7 +266,6 @@ bool is_move_valid(struct Coordinate from, struct Coordinate to, struct Board *b
 // gets a list of valid moves for a piece at a coordinate on the board
 struct MoveList get_valid_moves(struct Coordinate from, struct Board *b) {
     char piece_type = b->squares[from.r][from.c];
-
     struct MoveList moves = get_potential_moves(from, b);
 
     // filter potential moves array to remove invalid moves
@@ -268,4 +278,40 @@ struct MoveList get_valid_moves(struct Coordinate from, struct Board *b) {
     }
     moves.length = ptr;
     return moves;
+}
+
+// check if a player has any valid moves remaining on board
+bool player_has_valid_moves(struct Board *b, enum player_color pcolor) {
+    struct Coordinate coord;
+    for (int r = 0; r < 8; ++r) {
+        coord.r = r;
+        for (int c = 0; c < 8; ++c) {
+            coord.c = c;
+            if (get_color(b->squares[r][c]) == pcolor
+                 && get_valid_moves(coord, b).length >= 1) {
+                return true;
+            }
+        }
+    }
+    return false;  // player has no more valid moves
+}
+
+/**
+* check for checkmate
+* checkmate conditions:
+* 1. player's King is under check &&
+* 2. player has no valid moves on the board
+**/
+bool is_player_under_check_mated(struct Board *b, enum player_color pcolor) {
+    return !player_has_valid_moves(b, pcolor);
+}
+
+/**
+* check for stalemate
+* stalemate conditions:
+* 1. player's King is NOT in check &&
+* 2. player has no valid moves on the board
+**/
+bool is_unchecked_player_stalemated(struct Board *b, enum player_color pcolor) {
+    return !player_has_valid_moves(b, pcolor);
 }
