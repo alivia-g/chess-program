@@ -4,13 +4,10 @@
 	"pieces.h"
 	"ui.h"
 
-1629215708 d:\_shiro\cs\projects\chess\updated\chess-program\board.h
-	<assert.h>
+1630065320 d:\_shiro\cs\projects\chess\updated\chess-program\board.h
 	<stdbool.h>
-	<ctype.h>
-	<string.h>
 
-1629513354 d:\_shiro\cs\projects\chess\updated\chess-program\pieces.h
+1630062662 d:\_shiro\cs\projects\chess\updated\chess-program\pieces.h
 	"board.h"
 	"player.h"
 	"util.h"
@@ -20,9 +17,10 @@
 	"board.h"
 	"player.h"
 
-1629560840 source:d:\_shiro\cs\projects\chess\updated\chess-program\board.c
-	"board.h"
+1630062976 source:d:\_shiro\cs\projects\chess\updated\chess-program\board.c
+	<assert.h>
 	<stdio.h>
+	"board.h"
 	"util.h"
 	"player.h"
 
@@ -31,7 +29,7 @@
 	"board.h"
 	"ui.h"
 
-1629870006 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces.c
+1629982518 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces.c
 	<assert.h>
 	<stdlib.h>
 	"board.h"
@@ -57,4 +55,19 @@
 
 1629213596 source:d:\_shiro\cs\projects\chess\updated\chess-program\util.c
 	"util.h"
+
+1630062568 source:d:\_shiro\cs\projects\chess\updated\chess-program\analysis_test.c
+	"assert.h"
+	"analysis.h"
+	"board.h"
+
+1630062844 d:\_shiro\cs\projects\chess\updated\chess-program\analysis.h
+	"board.h"
+	"player.h"
+
+1630062938 source:d:\_shiro\cs\projects\chess\updated\chess-program\analysis.c
+	<assert.h>
+	"analysis.h"
+	"board.h"
+	"player.h"
 

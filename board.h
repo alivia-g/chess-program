@@ -1,10 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <assert.h>
 #include <stdbool.h>
-#include <ctype.h>
-#include <string.h>
 
 struct Board {
     char squares[8][8];

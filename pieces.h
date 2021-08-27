@@ -24,4 +24,6 @@ bool is_player_under_check_mated();
 
 bool is_unchecked_player_stalemated();
 
+int get_piece_value(char piece);
+
 #endif // PIECES_H

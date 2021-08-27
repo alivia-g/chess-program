@@ -315,3 +315,37 @@ bool is_player_under_check_mated(struct Board *b, enum player_color pcolor) {
 bool is_unchecked_player_stalemated(struct Board *b, enum player_color pcolor) {
     return !player_has_valid_moves(b, pcolor);
 }
+
+/**
+* Following the standard valuations of pieces' point value assignments.
+* queen: 9
+* rook: 5
+* knight: 3
+* bishop: 3
+* pawn: 1
+* Note: king is given a value (i.e. 1000) larger than the sum of all the pieces on the board without causing overflow
+**/
+int get_piece_value(char piece) {
+    switch (piece) {
+        case 'N':
+        case 'n':
+            return 3;
+        case 'Q':
+        case 'q':
+            return 9;
+        case 'K':
+        case 'k':
+            return 1000;
+        case 'B':
+        case 'b':
+            return 3;
+        case 'R':
+        case 'r':
+            return 5;
+        case 'P':
+        case 'p':
+            return 1;
+        default:
+            return 0;
+    }
+}

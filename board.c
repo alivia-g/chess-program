@@ -1,7 +1,7 @@
-#include "board.h"
-
+#include <assert.h>
 #include <stdio.h>
 
+#include "board.h"
 #include "util.h"
 #include "player.h"
 
