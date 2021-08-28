@@ -17,7 +17,8 @@ void add_move(struct MoveList *move_list, int r, int c) {
     struct Coordinate coord;
     coord.r = r;
     coord.c = c;
-    assert(validate_coord(coord));
+    // only add moves that are on the board (in bounds)
+    if (!validate_coord(coord)) { return; }
     move_list->coord[move_list->length].r = r;
     move_list->coord[move_list->length].c = c;
     ++(move_list->length);

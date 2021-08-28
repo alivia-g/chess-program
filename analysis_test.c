@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "assert.h"
 #include "analysis.h"
 #include "board.h"
@@ -58,6 +60,37 @@ void knight_and_rook_vs_queen_test() {
     assert(get_game_value(&b, black) == -1);
 }
 
+void checkmate_test() {
+    struct Board b;
+    clear(&b);
+    place_piece_with_algebraic_position('R', "a8", &b);  // place white rook
+    place_piece_with_algebraic_position('k', "g8", &b);  // place black king
+    place_piece_with_algebraic_position('p', "f7", &b);  // place three black pawns
+    place_piece_with_algebraic_position('p', "g7", &b);
+    place_piece_with_algebraic_position('p', "h7", &b);
+    place_piece_with_algebraic_position('K', "e1", &b);  // place white king
+    assert(is_king_in_check(&b, black) == true);
+    assert(is_player_under_check_mated(&b, black) == true);
+    assert(get_game_value(&b, black) == -2*INF);  // black is checkmated having a game value of -2*INFINITY
+    assert(get_game_value(&b, white) == 2*INF);  // white checkmated black
+    assert(get_player_value(&b, black) == -INF);
+    assert(get_player_value(&b, white) == INF);
+}
+
+void stalemate_test() {
+    struct Board b;
+    clear(&b);
+    place_piece_with_algebraic_position('k', "a8", &b);  // place black king
+    place_piece_with_algebraic_position('K', "b6", &b);  // place white king
+    place_piece_with_algebraic_position('N', "c6", &b);  // place white knight
+    assert(is_king_in_check(&b, black) == false);
+    assert(is_unchecked_player_stalemated(&b, black) == true);
+    assert(get_game_value(&b, black) == 0);  // tie
+    assert(get_game_value(&b, white) == 0);
+    assert(get_player_value(&b, black) == 0);  // both players get zero for stalemate
+    assert(get_player_value(&b, white) == 0);
+}
+
 int main() {
     empty_board_test();
     printf("empty_board_test passed.\n");
@@ -69,6 +102,10 @@ int main() {
     printf("king_and_bishop_test passed.\n");
     knight_and_rook_vs_queen_test();
     printf("knight_and_rook_vs_queen_test passed.\n");
+    checkmate_test();
+    printf("checkmate_test passed.\n");
+    stalemate_test();
+    printf("stalemate_test passed.\n");
 
     return 0;
 }

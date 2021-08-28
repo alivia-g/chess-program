@@ -20,9 +20,9 @@ struct MoveList get_valid_moves(struct Coordinate from, struct Board *b);
 
 bool is_king_in_check(struct Board *b, enum player_color pcolor);
 
-bool is_player_under_check_mated();
+bool is_player_under_check_mated(struct Board *b, enum player_color pcolor);
 
-bool is_unchecked_player_stalemated();
+bool is_unchecked_player_stalemated(struct Board *b, enum player_color pcolor);
 
 int get_piece_value(char piece);
 
