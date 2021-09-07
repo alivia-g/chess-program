@@ -4,6 +4,13 @@
 #include "board.h"
 #include "player.h"
 
+struct GameState {
+    bool game_over;
+    int special_value;  // 0 for stalemate; +/-INF for checkmate
+};
+
+struct GameState get_game_state(struct Board*, enum player_color);
+
 // returns the total value of a player's pieces on the board
 int get_player_value(struct Board *b, enum player_color pcolor);
 

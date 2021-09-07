@@ -4,8 +4,12 @@
 	"pieces.h"
 	"ui.h"
 
+1630138874 
+
 1630065320 d:\_shiro\cs\projects\chess\updated\chess-program\board.h
 	<stdbool.h>
+
+1630065320 >
 
 1630103162 d:\_shiro\cs\projects\chess\updated\chess-program\pieces.h
 	"board.h"
@@ -44,6 +48,8 @@
 1629015652 d:\_shiro\cs\projects\chess\updated\chess-program\util.h
 	"stdbool.h"
 
+1630137896 "
+
 1629869332 source:d:\_shiro\cs\projects\chess\updated\chess-program\pieces_tester.c
 	<stdio.h>
 	"board.h"
@@ -72,4 +78,131 @@
 	"board.h"
 	"player.h"
 	"stdbool.h"
+
+1630800298 source:/home/a/Documents/chess/chess-program/analysis.c
+	<assert.h>
+	"analysis.h"
+	"board.h"
+	"pieces.h"
+	"player.h"
+	"stdbool.h"
+
+1630800154 /home/a/Documents/chess/chess-program/analysis.h
+	"board.h"
+	"player.h"
+
+1630036520 /home/a/Documents/chess/chess-program/board.h
+	<stdbool.h>
+
+1628985276 /home/a/Documents/chess/chess-program/player.h
+
+1630801357 source:/home/a/Documents/chess/chess-program/board.c
+	<assert.h>
+	<stdio.h>
+	<string.h>
+	"board.h"
+	"util.h"
+	"player.h"
+
+1628986852 /home/a/Documents/chess/chess-program/util.h
+	"stdbool.h"
+
+1627438424 source:/home/a/Documents/chess/chess-program/ui.c
+	"ui.h"
+	"player.h"
+
+1627437988 /home/a/Documents/chess/chess-program/ui.h
+	<windows.h>
+	"board.h"
+	"player.h"
+
+1629184796 source:/home/a/Documents/chess/chess-program/util.c
+	"util.h"
+
+1630797504 source:/home/a/Documents/chess/chess-program/pieces.c
+	<assert.h>
+	<stdlib.h>
+	"board.h"
+	"pieces.h"
+	"player.h"
+	"util.h"
+
+1630797813 /home/a/Documents/chess/chess-program/pieces.h
+	"board.h"
+	"player.h"
+	"util.h"
+
+1630800483 source:/home/a/Documents/chess/chess-program/game.c
+	<assert.h>
+	<ctype.h>
+	<stdio.h>
+	"analysis.h"
+	"board.h"
+	"pieces.h"
+
+1630800298 source:c:\users\a\documents\chess\chess-program\analysis.c
+	<assert.h>
+	"analysis.h"
+	"board.h"
+	"pieces.h"
+	"player.h"
+	"stdbool.h"
+
+1630800154 c:\users\a\documents\chess\chess-program\analysis.h
+	"board.h"
+	"player.h"
+
+1630984904 c:\users\a\documents\chess\chess-program\board.h
+	<stdbool.h>
+	"player.h"
+
+1630985169 c:\users\a\documents\chess\chess-program\player.h
+
+1630985752 c:\users\a\documents\chess\chess-program\pieces.h
+	"board.h"
+	"player.h"
+	"util.h"
+
+1628986852 c:\users\a\documents\chess\chess-program\util.h
+	"stdbool.h"
+
+1630984862 source:c:\users\a\documents\chess\chess-program\board.c
+	<assert.h>
+	<stdio.h>
+	<string.h>
+	"board.h"
+	"util.h"
+	"player.h"
+
+1630797504 source:c:\users\a\documents\chess\chess-program\pieces.c
+	<assert.h>
+	<stdlib.h>
+	"board.h"
+	"pieces.h"
+	"player.h"
+	"util.h"
+
+1629184796 source:c:\users\a\documents\chess\chess-program\util.c
+	"util.h"
+
+1630985471 source:c:\users\a\documents\chess\chess-program\game.c
+	<assert.h>
+	<ctype.h>
+	<stdio.h>
+	"analysis.h"
+	"board.h"
+	"pieces.h"
+	"ui.h"
+	"util.h"
+
+1627437988 c:\users\a\documents\chess\chess-program\ui.h
+	<windows.h>
+	"board.h"
+	"player.h"
+
+1630818068 source:c:\users\a\documents\chess\chess-program\ui.c
+	<ctype.h>
+	<stdio.h>
+	"ui.h"
+	"player.h"
 

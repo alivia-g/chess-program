@@ -2,13 +2,9 @@
 
 #include "analysis.h"
 #include "board.h"
+#include "pieces.h"
 #include "player.h"
 #include "stdbool.h"
-
-struct GameState {
-    bool game_over;
-    int special_value;  // 0 for stalemate; +/-INF for checkmate
-};
 
 // returns information on if the game is over and the game state value
 struct GameState get_game_state(struct Board *b, enum player_color curr_player) {

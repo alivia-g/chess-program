@@ -28,3 +28,9 @@ Stage 6) Minimax AI
 3. Calculate a value for a position (checkmate is infinite, stalemate is zero)
 4. Bonus: 3-move repetition
 5. Bonus: 50-move rule
+
+## Stage 4)
+1. Main game loop with stubs for player turns
+2. Asking player for move
+3. AI generates random move
+4. Prevent players from making invalid moves

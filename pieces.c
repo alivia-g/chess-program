@@ -240,11 +240,15 @@ bool is_king_in_check(struct Board *b, enum player_color pcolor) {
 }
 
 // helper function to check if a potential move is valid
-bool is_move_valid(struct Coordinate from, struct Coordinate to, struct Board *b) {
-    char piece_type = b->squares[from.r][from.c];
+bool is_move_valid(struct Coordinate from, struct Coordinate to, struct Board *b, enum player_color current_player) {
     // boundary check
     if (!validate_coord(to)) { return false; }
-    // own-piece-color check
+
+    enum player_color piece_color = get_color(b->squares[from.r][from.c]);
+    if (current_player != piece_color) { return false; }
+
+    char piece_type = b->squares[from.r][from.c];
+    // a piece cannot capture pieces of the same color
     if (get_color(b->squares[to.r][to.c]) == get_color(piece_type)) { return false; }
 
     // move the piece to a potential position
@@ -265,14 +269,14 @@ bool is_move_valid(struct Coordinate from, struct Coordinate to, struct Board *b
 }
 
 // gets a list of valid moves for a piece at a coordinate on the board
-struct MoveList get_valid_moves(struct Coordinate from, struct Board *b) {
+struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor) {
     char piece_type = b->squares[from.r][from.c];
     struct MoveList moves = get_potential_moves(from, b);
 
     // filter potential moves array to remove invalid moves
     int ptr = 0;  // marks the index of right-most valid move in moves array
     for (int i = 0; i < moves.length; ++i) {
-        if (is_move_valid(from, moves.coord[i], b)) {
+        if (is_move_valid(from, moves.coord[i], b, pcolor)) {
             moves.coord[ptr] = moves.coord[i];
             ++ptr;
         }
@@ -289,7 +293,7 @@ bool player_has_valid_moves(struct Board *b, enum player_color pcolor) {
         for (int c = 0; c < 8; ++c) {
             coord.c = c;
             if (get_color(b->squares[r][c]) == pcolor
-                 && get_valid_moves(coord, b).length >= 1) {
+                 && get_valid_moves(coord, b, pcolor).length >= 1) {
                 return true;
             }
         }

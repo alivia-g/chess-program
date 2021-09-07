@@ -37,7 +37,7 @@ int main() {
         display_board(&b, CURRENT_PLAYER);
         // validate piece's possible moves, return list of valid moves
         struct Coordinate coord = algebraic_to_coordinate(pos);
-        struct MoveList valid_moves = get_valid_moves(coord, &b);
+        struct MoveList valid_moves = get_valid_moves(coord, &b, CURRENT_PLAYER);
         for (int i = 0; i < valid_moves.length; ++i) {
             //place_piece_with_algebraic_position(piece_type, valid_moves.coord[i], &b);
             printf("%d,%d\n", valid_moves.coord[i].r, valid_moves.coord[i].c);

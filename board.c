@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "board.h"
 #include "util.h"
@@ -83,7 +84,7 @@ bool validate_coord(struct Coordinate coord) {
     return (coord.r >= 0)&&(coord.r <= 7)&&(coord.c >= 0)&&(coord.c <= 7);
 }
 
-char get_color(char piece_type) {
+enum player_color get_color(char piece_type) {
     if (piece_type == EMPTY) {
         return none;
     } else if (('A' <= piece_type) && (piece_type <= 'Z')) {

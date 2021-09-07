@@ -31,6 +31,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../analysis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../analysis.h" />
 		<Unit filename="../board.c">
 			<Option compilerVar="CC" />
 			<Option target="Debug" />
@@ -38,15 +42,14 @@
 		<Unit filename="../board.h">
 			<Option target="Debug" />
 		</Unit>
+		<Unit filename="../game.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="../pieces.c">
 			<Option compilerVar="CC" />
 			<Option target="Debug" />
 		</Unit>
 		<Unit filename="../pieces.h">
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="../pieces_tester.c">
-			<Option compilerVar="CC" />
 			<Option target="Debug" />
 		</Unit>
 		<Unit filename="../player.h">
