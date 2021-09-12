@@ -1,6 +1,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#include <stdio.h>
+
 #include "board.h"
 #include "pieces.h"
 #include "player.h"
@@ -270,8 +272,14 @@ bool is_move_valid(struct Coordinate from, struct Coordinate to, struct Board *b
 
 // gets a list of valid moves for a piece at a coordinate on the board
 struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor) {
-    char piece_type = b->squares[from.r][from.c];
     struct MoveList moves = get_potential_moves(from, b);
+
+    char piece_type = b->squares[from.r][from.c];
+    if (piece_type == EMPTY) {
+        moves.length = 0;
+        moves.coord = NULL;
+        return moves;
+    }
 
     // filter potential moves array to remove invalid moves
     int ptr = 0;  // marks the index of right-most valid move in moves array

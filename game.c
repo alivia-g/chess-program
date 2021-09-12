@@ -1,6 +1,11 @@
+// to build: $ gcc -c game.c -o game.o
+//           $ gcc analysis.o board.o pieces.o ui.o util.o game.o -o game
+
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "analysis.h"
 #include "board.h"
@@ -29,21 +34,33 @@ struct Move human_make_move() {
     return new_move;
 }
 
-struct Move ai_make_move() {
+// assumes the game is not over
+struct Move ai_make_move(struct Board *b, enum player_color pcolor) {
+    time_t t;
+    srand((unsigned) time(&t));  // seed
     struct Move new_move;
-    new_move.from.r = 0;
-    new_move.from.c = 0;
-    new_move.to.r = 1;
-    new_move.to.c = 1;
+    struct MoveList valid_moves;
+    valid_moves.length = 0;
+    do {
+        new_move.from.r = rand() % 8;  // generate a random integer between 0 and 7
+        new_move.from.c = rand() % 8;
+        char piece_type = b->squares[new_move.from.r][new_move.from.c];
+        if (get_color(piece_type) != pcolor) { continue; }
+        valid_moves = get_valid_moves(new_move.from, b, pcolor);
+    } while (valid_moves.length == 0);
+
+    // randomly pick a move from valid moves
+    new_move.to = valid_moves.coord[rand() % valid_moves.length];
+
     // TODO: choose a move based on AI difficulty
     return new_move;
 }
 
-// Assumes that the input move is valid
+// assumes that the input move is valid
 void make_move(struct Board *b, struct Move move) {
-    // Remove piece from move.from
+    // remove piece from move.from
     char old_piece = place_piece_on_coordinate(EMPTY, move.from, b);
-    // Place a piece at move.to
+    // place a piece at move.to
     place_piece_on_coordinate(old_piece, move.to, b);
 }
 
@@ -55,17 +72,19 @@ void play_game(struct Board *b, enum player_color current_player, char white_pla
             if (white_player == 'h') {
                 new_move = human_make_move();
             } else if (white_player == 'c') {
-                new_move = ai_make_move();
+                new_move = ai_make_move(b, current_player);
             }
         }
         if (current_player == black) {  // black's turn
             if (black_player == 'h') {
                 new_move = human_make_move();
             } else if (black_player == 'c') {
-                new_move = ai_make_move();
+                new_move = ai_make_move(b, current_player);
             }
         }
     } while (!is_move_valid(new_move.from, new_move.to, b, current_player));
+
+    //printf("from %d,%d to %d,%d\n", new_move.from.r, new_move.from.c, new_move.to.r, new_move.to.c);
 
     make_move(b, new_move);
 }
@@ -95,6 +114,7 @@ int main() {
     enum player_color current_player = white;
     while(!get_game_state(&b, current_player).game_over) {
         display_board(&b, current_player);
+        printf("\n");
         play_game(&b, current_player, white_player_type, black_player_type);
         if (current_player == white) {
             current_player = black;
