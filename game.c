@@ -122,6 +122,19 @@ int main() {
             current_player = white;
         }
     }
+    display_board(&b, current_player);
+
     // print game result
+    int game_result = get_game_state(&b, white).special_value;
+    if (game_result == 0) {
+        printf("Game tied by stalemate.");
+    } else if (game_result == -INF) {
+        printf("Black won!");
+    } else if (game_result == INF) {
+        printf("White won!");
+    } else {
+        printf("get_game_state Error.");
+    }
+
     return 0;
 }
