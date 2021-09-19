@@ -34,8 +34,8 @@ void display_board(struct Board* b, enum player_color player) {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), background | foreground);
             printf("%c", b->squares[r][c]);
         }
+        // reset colors
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BLACK_FOREGROUND | WHITE_FOREGROUND);
         printf("\n");
     }
-    // reset colors
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BLACK_FOREGROUND | WHITE_FOREGROUND);
 }

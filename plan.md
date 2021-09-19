@@ -35,8 +35,7 @@ Stage 6) Minimax AI
 3. AI generates random move
 4. Prevent players from making invalid moves
 
-Known bugs TODOs:
+Known bugs:
 - need to check that human moves are among the list of potential moves
-- declare the result of the game after it's over
 - fix the test files
 - implement coordinate to algebraic conversion(edited)
