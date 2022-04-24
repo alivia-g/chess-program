@@ -99,6 +99,20 @@ char get_player_type() {
     return player_type;
 }
 
+void initialize_board(struct Board* b) {
+    char board_type = 0;
+    while (board_type != 'd' && board_type != 'c') {
+        scanf("%c", &board_type);
+        getchar();
+        board_type = tolower(board_type);
+    }
+    if (board_type == 'd') {
+        initialize_default_board(b);
+    } else if (board_type == 'c') {
+        initialize_custom_board(b);
+    }
+}
+
 int main() {
     printf("Choose player type for white: Human(h)/Computer(c)\n");
     char white_player_type = get_player_type();
@@ -110,6 +124,7 @@ int main() {
     // initialize board
     struct Board b;
     clear(&b);
+    printf("Choose board type: Default(d)/Custom(c)\n");
     initialize_board(&b);
     enum player_color current_player = white;
     while(!get_game_state(&b, current_player).game_over) {

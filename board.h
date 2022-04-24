@@ -17,7 +17,9 @@ char place_piece_with_algebraic_position(char, char*, struct Board*);
 
 char place_piece_on_coordinate(char, struct Coordinate, struct Board*);
 
-void initialize_board(struct Board*);
+void initialize_default_board(struct Board*);
+
+void initialize_custom_board(struct Board*);
 
 void copy_board(struct Board*, struct Board*);
 

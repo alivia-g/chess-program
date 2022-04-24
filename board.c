@@ -37,7 +37,7 @@ char place_piece_on_coordinate(char piece, struct Coordinate coord, struct Board
     return old_piece;
 }
 
-void initialize_board(struct Board* b) {
+void initialize_default_board(struct Board* b) {
     place_piece_with_algebraic_position(BROOK, "a8", b);
     place_piece_with_algebraic_position(BKNIGHT, "b8", b);
     place_piece_with_algebraic_position(BBISHOP, "c8", b);
@@ -67,6 +67,17 @@ void initialize_board(struct Board* b) {
         char s[3] = "a7";
         s[0] = f;
         place_piece_with_algebraic_position(BPAWN, s, b);
+    }
+}
+
+void initialize_custom_board(struct Board* b) {
+    for (int r = 7; r >= 0; --r) {
+        char row[9];
+        gets(row);
+        assert(strlen(row) == 8);
+        for (int c = 0; c < 8; ++c) {
+            b->squares[r][c] = row[c];
+        }
     }
 }
 
