@@ -50,6 +50,46 @@ struct Move ai_make_move(struct Board *b, enum player_color pcolor, char ai_type
     }
 }
 
+void print_game_info(struct Board *b, enum player_color current_player, char player_type, struct Move last_move) {
+    // print the current player and the last move they played as well as the game value
+    switch (player_type) {
+        case 'h': {
+            printf("Human");
+            break;
+        }
+        case 'r': {
+            printf("Random AI");
+            break;
+        }
+        case 'g': {
+            printf("Greedy AI");
+            break;
+        }
+        case 'm': {
+            printf("Minimax AI");
+            break;
+        }
+        case 'a': {
+            printf("Alpha-beta AI");
+            break;
+        }
+        default:
+            printf("Unknown player");
+    }
+
+    char* move_string = stringify_move(last_move);
+    printf(" plays %s as ", move_string);
+    free(move_string);
+
+    if (current_player == black) {
+        printf("black");
+    } else if (current_player == white) {
+        printf("white");
+    }
+    printf("\n");
+    printf("Current value: %d\n", get_game_value(b, current_player));
+}
+
 // turn-based game
 void play_game(struct Board *b, enum player_color current_player, char white_player, char black_player) {
     struct Move new_move;
@@ -73,6 +113,9 @@ void play_game(struct Board *b, enum player_color current_player, char white_pla
     //printf("from %d,%d to %d,%d\n", new_move.from.r, new_move.from.c, new_move.to.r, new_move.to.c);
 
     make_move(b, new_move);
+
+    char player_type = current_player == white ? white_player : black_player;
+    print_game_info(b, current_player, player_type, new_move);
 }
 
 char get_player_type() {

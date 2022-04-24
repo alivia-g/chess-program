@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>  // malloc
 #include <string.h>
 
 #include "board.h"
@@ -21,6 +22,29 @@ struct Coordinate algebraic_to_coordinate(char *pos) {
     coord.c = pos[0] - 'a';
     return coord;
 };
+
+char* coordinate_to_algebraic(struct Coordinate coord) {
+    char* algebraic = malloc(3 * sizeof(char));
+    algebraic[0] = coord.c + 'a';
+    algebraic[1] = coord.r + '1';
+    algebraic[2] = '\0';
+    return algebraic;
+};
+
+char* stringify_move(struct Move move) {
+    char* move_string = malloc(6 * sizeof(char));
+    char* from_string = coordinate_to_algebraic(move.from);
+    char* to_string = coordinate_to_algebraic(move.to);
+    move_string[0] = from_string[0];
+    move_string[1] = from_string[1];
+    move_string[2] = '-';
+    move_string[3] = to_string[0];
+    move_string[4] = to_string[1];
+    move_string[5] = '\0';
+    free(from_string);
+    free(to_string);
+    return move_string;
+}
 
 char place_piece_with_algebraic_position(char piece, char *pos, struct Board *b) {
     struct Coordinate coord = algebraic_to_coordinate(pos);

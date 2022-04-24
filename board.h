@@ -19,6 +19,10 @@ void clear(struct Board*);
 
 struct Coordinate algebraic_to_coordinate(char*);
 
+char* coordinate_to_algebraic(struct Coordinate);
+
+char* stringify_move(struct Move);
+
 char place_piece_with_algebraic_position(char, char*, struct Board*);
 
 char place_piece_on_coordinate(char, struct Coordinate, struct Board*);
