@@ -106,3 +106,11 @@ enum player_color get_color(char piece_type) {
         return none;
     }
 }
+
+// assumes that the input move is valid
+void make_move(struct Board *b, struct Move move) {
+    // remove piece from move.from
+    char old_piece = place_piece_on_coordinate(EMPTY, move.from, b);
+    // place a piece at move.to
+    place_piece_on_coordinate(old_piece, move.to, b);
+}

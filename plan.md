@@ -3,9 +3,10 @@ Stage 1) Chessboard\
 Stage 2) Movement (per piece, check validity)\
 Stage 3) Evaluate game state\
 Stage 4) Turn-based game, with user input\
-Stage 5) Minimal AI (random choice among greedy best moves, i.e. 1 ply)\
-Stage 6) Minimax AI
-Stage 7) Alpha-beta pruning
+Stage 5) Random AI (0-ply)
+Stage 6) Greedy AI (1-ply)
+Stage 7) Minimax AI (n-ply)
+Stage 8) Alpha-beta pruning (n-ply)
 
 ## Stage 1)
 1. Define a chessboard struct (i.e. 8x8 array)

@@ -4,9 +4,15 @@
 #include <stdbool.h>
 
 #include "player.h"
+#include "util.h"
 
 struct Board {
     char squares[8][8];
+};
+
+struct Move {
+    struct Coordinate from;
+    struct Coordinate to;
 };
 
 void clear(struct Board*);
@@ -26,5 +32,7 @@ void copy_board(struct Board*, struct Board*);
 bool validate_coord(struct Coordinate);
 
 enum player_color get_color(char);
+
+void make_move(struct Board *b, struct Move move);
 
 #endif // BOARD_H

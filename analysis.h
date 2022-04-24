@@ -5,11 +5,6 @@
 #include "player.h"
 #include "util.h"
 
-struct Move {
-    struct Coordinate from;
-    struct Coordinate to;
-};
-
 struct GameState {
     bool game_over;
     int special_value;  // 0 for stalemate; +/-INF for checkmate

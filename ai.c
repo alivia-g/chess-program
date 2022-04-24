@@ -27,3 +27,41 @@ struct Move random_ai_make_move(struct Board *b, enum player_color pcolor) {
     // TODO: choose a move based on AI difficulty
     return new_move;
 }
+
+struct Move greedy_ai_make_move(struct Board *b, enum player_color pcolor) {
+    struct Move best_move;
+    int highest_value_so_far = -INF;
+
+    // for each square on the board
+    for (int r = 0; r < 8; ++r) {
+        for (int c = 0; c < 8; ++c) {
+            struct Move new_move;
+            new_move.from.r = r;
+            new_move.from.c = c;
+
+            // if this piece is ours...
+            char piece_type = b->squares[new_move.from.r][new_move.from.c];
+            if (get_color(piece_type) != pcolor) { continue; }
+
+            // get all its valid moves
+            struct MoveList valid_moves = get_valid_moves(new_move.from, b, pcolor);
+
+            for (int i = 0; i < valid_moves.length; ++i) {
+                new_move.to = valid_moves.coord[i];
+
+                // consider the board position after making this move
+                struct Board new_board;
+                copy_board(b, &new_board);
+                make_move(&new_board, new_move);
+
+                int new_board_value = get_game_value(&new_board, pcolor);
+                // update the best move found so far
+                if (new_board_value > highest_value_so_far) {
+                    highest_value_so_far = new_board_value;
+                    best_move = new_move;
+                }
+            }
+        }
+    }
+    return best_move;
+}

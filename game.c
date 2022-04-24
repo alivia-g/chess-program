@@ -30,19 +30,14 @@ struct Move human_make_move() {
     return new_move;
 }
 
-// assumes that the input move is valid
-void make_move(struct Board *b, struct Move move) {
-    // remove piece from move.from
-    char old_piece = place_piece_on_coordinate(EMPTY, move.from, b);
-    // place a piece at move.to
-    place_piece_on_coordinate(old_piece, move.to, b);
-}
-
 struct Move ai_make_move(struct Board *b, enum player_color pcolor, char ai_type) {
     ai_type = tolower(ai_type);
     switch (ai_type) {
         case 'r': {
             return random_ai_make_move(b, pcolor);
+        }
+        case 'g': {
+            return greedy_ai_make_move(b, pcolor);
         }
 //        case 'm': {
 //            return minimax_ai_make_move(b, pcolor);
@@ -105,9 +100,9 @@ void initialize_board(struct Board* b) {
 }
 
 int main() {
-    printf("Choose player type for white:\nHuman(h)\nRandom(r)\nMinimax(m)\nAlpha-beta(a)\n");
+    printf("Choose player type for white:\nHuman(h)\nRandom(r)\nGreedy(g)\nMinimax(m)\nAlpha-beta(a)\n");
     char white_player_type = get_player_type();
-    printf("Choose player type for black:\nHuman(h)\nRandom(r)\nMinimax(m)\nAlpha-beta(a)\n");
+    printf("Choose player type for black:\nHuman(h)\nRandom(r)\nGreedy(g)\nMinimax(m)\nAlpha-beta(a)\n");
     char black_player_type = get_player_type();
     assert(valid_player_type(white_player_type));
     assert(valid_player_type(black_player_type));
