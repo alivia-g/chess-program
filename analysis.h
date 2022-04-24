@@ -3,6 +3,12 @@
 
 #include "board.h"
 #include "player.h"
+#include "util.h"
+
+struct Move {
+    struct Coordinate from;
+    struct Coordinate to;
+};
 
 struct GameState {
     bool game_over;

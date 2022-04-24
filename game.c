@@ -1,5 +1,5 @@
 // to build: $ gcc -c game.c -o game.o
-//           $ gcc analysis.o board.o pieces.o ui.o util.o game.o -o game
+//           $ gcc ai.o analysis.o board.o pieces.o player.o ui.o util.o game.o -o game
 
 #include <assert.h>
 #include <ctype.h>
@@ -7,16 +7,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "ai.h"
 #include "analysis.h"
 #include "board.h"
 #include "pieces.h"
 #include "ui.h"
 #include "util.h"
-
-struct Move {
-    struct Coordinate from;
-    struct Coordinate to;
-};
 
 struct Move human_make_move() {
     struct Move new_move;
@@ -34,34 +30,29 @@ struct Move human_make_move() {
     return new_move;
 }
 
-// assumes the game is not over
-struct Move ai_make_move(struct Board *b, enum player_color pcolor) {
-    time_t t;
-    srand((unsigned) time(&t));  // seed
-    struct Move new_move;
-    struct MoveList valid_moves;
-    valid_moves.length = 0;
-    do {
-        new_move.from.r = rand() % 8;  // generate a random integer between 0 and 7
-        new_move.from.c = rand() % 8;
-        char piece_type = b->squares[new_move.from.r][new_move.from.c];
-        if (get_color(piece_type) != pcolor) { continue; }
-        valid_moves = get_valid_moves(new_move.from, b, pcolor);
-    } while (valid_moves.length == 0);
-
-    // randomly pick a move from valid moves
-    new_move.to = valid_moves.coord[rand() % valid_moves.length];
-
-    // TODO: choose a move based on AI difficulty
-    return new_move;
-}
-
 // assumes that the input move is valid
 void make_move(struct Board *b, struct Move move) {
     // remove piece from move.from
     char old_piece = place_piece_on_coordinate(EMPTY, move.from, b);
     // place a piece at move.to
     place_piece_on_coordinate(old_piece, move.to, b);
+}
+
+struct Move ai_make_move(struct Board *b, enum player_color pcolor, char ai_type) {
+    ai_type = tolower(ai_type);
+    switch (ai_type) {
+        case 'r': {
+            return random_ai_make_move(b, pcolor);
+        }
+//        case 'm': {
+//            return minimax_ai_make_move(b, pcolor);
+//        }
+//        case 'a': {
+//            return alphabeta_ai_make_move(b, pcolor);
+//        }
+        default:
+            printf("Invalid AI type: ai_make_move Error.");
+    }
 }
 
 // turn-based game
@@ -71,15 +62,15 @@ void play_game(struct Board *b, enum player_color current_player, char white_pla
         if (current_player == white) {  // white's turn
             if (white_player == 'h') {
                 new_move = human_make_move();
-            } else if (white_player == 'c') {
-                new_move = ai_make_move(b, current_player);
+            } else {
+                new_move = ai_make_move(b, current_player, white_player);
             }
         }
         if (current_player == black) {  // black's turn
             if (black_player == 'h') {
                 new_move = human_make_move();
-            } else if (black_player == 'c') {
-                new_move = ai_make_move(b, current_player);
+            } else {
+                new_move = ai_make_move(b, current_player, black_player);
             }
         }
     } while (!is_move_valid(new_move.from, new_move.to, b, current_player));
@@ -91,7 +82,7 @@ void play_game(struct Board *b, enum player_color current_player, char white_pla
 
 char get_player_type() {
     char player_type = 0;
-    while (player_type != 'h' && player_type != 'c') {
+    while (!valid_player_type(player_type)) {
         scanf("%c", &player_type);
         getchar();
         player_type = tolower(player_type);
@@ -114,12 +105,12 @@ void initialize_board(struct Board* b) {
 }
 
 int main() {
-    printf("Choose player type for white: Human(h)/Computer(c)\n");
+    printf("Choose player type for white:\nHuman(h)\nRandom(r)\nMinimax(m)\nAlpha-beta(a)\n");
     char white_player_type = get_player_type();
-    printf("Choose player type for black: Human(h)/Computer(c)\n");
+    printf("Choose player type for black:\nHuman(h)\nRandom(r)\nMinimax(m)\nAlpha-beta(a)\n");
     char black_player_type = get_player_type();
-    assert(white_player_type == 'h' || white_player_type == 'c');
-    assert(black_player_type == 'h' || black_player_type == 'c');
+    assert(valid_player_type(white_player_type));
+    assert(valid_player_type(black_player_type));
 
     // initialize board
     struct Board b;
