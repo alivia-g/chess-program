@@ -31,7 +31,7 @@ struct Move human_make_move() {
     return new_move;
 }
 
-struct Move ai_make_move(struct Board *b, enum player_color pcolor, char ai_type) {
+struct Move ai_make_move(struct Board *b, enum player_color pcolor, char ai_type, int difficulty) {
     ai_type = tolower(ai_type);
     switch (ai_type) {
         case 'r': {
@@ -41,17 +41,17 @@ struct Move ai_make_move(struct Board *b, enum player_color pcolor, char ai_type
             return greedy_ai_make_move(b, pcolor);
         }
         case 'm': {
-            return minimax_ai_make_move(b, pcolor, 2);
+            return minimax_ai_make_move(b, pcolor, difficulty);
         }
 //        case 'a': {
-//            return alphabeta_ai_make_move(b, pcolor);
+//            return alphabeta_ai_make_move(b, pcolor, difficulty);
 //        }
         default:
             printf("Invalid AI type: ai_make_move Error.");
     }
 }
 
-void print_game_info(struct Board *b, enum player_color current_player, char player_type, struct Move last_move) {
+void print_game_info(struct Board *b, enum player_color current_player, char player_type, struct Move last_move, int ai_difficulty) {
     // print the current player and the last move they played as well as the game value
     switch (player_type) {
         case 'h': {
@@ -59,19 +59,19 @@ void print_game_info(struct Board *b, enum player_color current_player, char pla
             break;
         }
         case 'r': {
-            printf("Random AI");
+            printf("Random AI (0 ply)");
             break;
         }
         case 'g': {
-            printf("Greedy AI");
+            printf("Greedy AI (1 ply)");
             break;
         }
         case 'm': {
-            printf("Minimax AI");
+            printf("Minimax AI (%d ply)", ai_difficulty);
             break;
         }
         case 'a': {
-            printf("Alpha-beta AI");
+            printf("Alpha-beta AI (%d ply)", ai_difficulty);
             break;
         }
         default:
@@ -92,21 +92,21 @@ void print_game_info(struct Board *b, enum player_color current_player, char pla
 }
 
 // turn-based game
-void play_game(struct Board *b, enum player_color current_player, char white_player, char black_player) {
+void play_game(struct Board *b, enum player_color current_player, char white_player, char black_player, int white_difficulty, int black_difficulty) {
     struct Move new_move;
     do {
         if (current_player == white) {  // white's turn
             if (white_player == 'h') {
                 new_move = human_make_move();
             } else {
-                new_move = ai_make_move(b, current_player, white_player);
+                new_move = ai_make_move(b, current_player, white_player, white_difficulty);
             }
         }
         if (current_player == black) {  // black's turn
             if (black_player == 'h') {
                 new_move = human_make_move();
             } else {
-                new_move = ai_make_move(b, current_player, black_player);
+                new_move = ai_make_move(b, current_player, black_player, black_difficulty);
             }
         }
     } while (!is_move_valid(new_move.from, new_move.to, b, current_player));
@@ -116,7 +116,23 @@ void play_game(struct Board *b, enum player_color current_player, char white_pla
     make_move(b, new_move);
 
     char player_type = current_player == white ? white_player : black_player;
-    print_game_info(b, current_player, player_type, new_move);
+    char ai_difficulty = current_player == white ? white_difficulty : black_difficulty;
+    print_game_info(b, current_player, player_type, new_move, ai_difficulty);
+}
+
+int get_ai_difficulty(char player_type) {
+    // check for special cases
+    if (player_type == 'h') return -1;
+    if (player_type == 'r') return 0;
+    if (player_type == 'g') return 1;
+
+    int num_plies = 0;
+    while (num_plies <= 0) {
+        printf("Enter AI difficulty (i.e. number of plies): ");
+        scanf("%d", &num_plies);
+        getchar();
+    }
+    return num_plies;
 }
 
 char get_player_type() {
@@ -146,9 +162,12 @@ void initialize_board(struct Board* b) {
 int main() {
     printf("Choose player type for white:\nHuman(h)\nRandom(r)\nGreedy(g)\nMinimax(m)\nAlpha-beta(a)\n");
     char white_player_type = get_player_type();
+    int white_difficulty = get_ai_difficulty(white_player_type);
+    assert(valid_player_type(white_player_type));
+
     printf("Choose player type for black:\nHuman(h)\nRandom(r)\nGreedy(g)\nMinimax(m)\nAlpha-beta(a)\n");
     char black_player_type = get_player_type();
-    assert(valid_player_type(white_player_type));
+    int black_difficulty = get_ai_difficulty(black_player_type);
     assert(valid_player_type(black_player_type));
 
     // initialize board
@@ -160,7 +179,7 @@ int main() {
     while(!get_game_state(&b, current_player).game_over) {
         display_board(&b, current_player);
         printf("\n");
-        play_game(&b, current_player, white_player_type, black_player_type);
+        play_game(&b, current_player, white_player_type, black_player_type, white_difficulty, black_difficulty);
         current_player = switch_turns(current_player);
     }
     display_board(&b, current_player);
