@@ -79,6 +79,7 @@ struct Move greedy_ai_make_move(struct Board *b, enum player_color pcolor) {
             // consider the board position after making this move
             struct Board new_board;
             copy_board(b, &new_board);
+
             make_move(&new_board, new_move);
 
             int new_board_value = get_game_value(&new_board, pcolor);
@@ -106,6 +107,7 @@ int minimax_recursion(struct Board *b, enum player_color pcolor, int depth, stru
     int minimax = INF;
     struct MoveList shuffled_squares = get_shuffled_coords();
 
+    bool found_any_move = false;
     // for each square on the board
     for (int i = 0; i < shuffled_squares.length; ++i) {
         struct Move new_move;
@@ -122,16 +124,22 @@ int minimax_recursion(struct Board *b, enum player_color pcolor, int depth, stru
         for (int i = 0; i < valid_moves.length; ++i) {
             new_move.to = valid_moves.coord[i];
             // consider the board position after making this move
-            struct Board new_board;
-            copy_board(b, &new_board);
-            make_move(&new_board, new_move);
+            char old_from = b->squares[new_move.from.r][new_move.from.c];
+            char old_to = b->squares[new_move.to.r][new_move.to.c];
+
+            make_move(b, new_move);
+
             struct Move opponent_move;  // dummy - not used
-            int new_board_value = minimax_recursion(&new_board, switch_turns(pcolor), depth-1, &opponent_move, output);
+            //int new_board_value = minimax_recursion(&new_board, switch_turns(pcolor), depth-1, &opponent_move, output);
+            int new_board_value = minimax_recursion(b, switch_turns(pcolor), depth-1, &opponent_move, output);
             // update the best move found so far
-            if (new_board_value < minimax) {
+            if (new_board_value < minimax || !found_any_move) {
                 minimax = new_board_value;
                 *best_move = new_move;
+                found_any_move = true;
             }
+            b->squares[new_move.from.r][new_move.from.c] = old_from;
+            b->squares[new_move.to.r][new_move.to.c] = old_to;
         }
         clear_movelist(&valid_moves);
     }
@@ -140,12 +148,16 @@ int minimax_recursion(struct Board *b, enum player_color pcolor, int depth, stru
 }
 
 struct Move minimax_ai_make_move(struct Board *b, enum player_color pcolor, int max_depth) {
-    FILE *log_output = fopen("log_output.txt", "w");
+    FILE *log_output = fopen("log_output.txt", "a");
 
     struct Move best_move;
     minimax_recursion(b, pcolor, max_depth, &best_move, log_output);
-
+    printf("minimax_ai_make_move(): best_move = %s\n", stringify_move(best_move));
     fclose(log_output);
 
     return best_move;
+}
+
+struct Move alphabeta_ai_make_move(struct Board *b, enum player_color pcolor, int max_depth) {
+
 }

@@ -279,29 +279,6 @@ bool is_move_valid(struct Coordinate from, struct Coordinate to, struct Board *b
 }
 
 // gets a list of valid moves for a piece at a coordinate on the board
-//struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor) {
-//    struct MoveList moves = get_potential_moves(from, b);
-//
-//    char piece_type = b->squares[from.r][from.c];
-//    if (piece_type == EMPTY) {
-//        moves.length = 0;
-//        moves.coord = NULL;
-//        return moves;
-//    }
-//
-//    // filter potential moves array to remove invalid moves
-//    int ptr = 0;  // marks the index of right-most valid move in moves array
-//    for (int i = 0; i < moves.length; ++i) {
-//        if (is_move_valid(from, moves.coord[i], b, pcolor)) {
-//            moves.coord[ptr] = moves.coord[i];
-//            ++ptr;
-//        }
-//    }
-//    moves.length = ptr;
-//    return moves;
-//}
-
-
 struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor) {
     struct MoveList moves = get_potential_moves(from, b);
 
@@ -323,7 +300,6 @@ struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum pl
     moves.length = ptr;
     return moves;
 }
-
 
 // source: https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
 // randomly shuffle the movelist
