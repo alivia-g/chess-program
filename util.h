@@ -1,7 +1,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include "stdbool.h"
+#include <stdbool.h>
+#include <stdio.h>
 
 static const char EMPTY = ' ';
 
@@ -25,5 +26,7 @@ struct Coordinate {
 };
 
 bool coords_equal(struct Coordinate, struct Coordinate);
+
+void open_log_file(FILE** file_ptr, char *file_name);
 
 #endif  // UTIL_H

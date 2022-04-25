@@ -6,6 +6,7 @@
 #include "board.h"
 #include "pieces.h"
 #include "player.h"
+#include "util.h"
 
 // randomly orders all squares on the board
 struct MoveList get_shuffled_coords() {
@@ -96,7 +97,10 @@ struct Move greedy_ai_make_move(struct Board *b, enum player_color pcolor) {
 }
 
 // returns the maximum value that the current player can get
-int minimax_recursion(struct Board *b, enum player_color pcolor, int depth, struct Move* best_move, FILE* output) {
+int minimax_recursion(struct Board *b, enum player_color pcolor, int depth, struct Move* best_move, int* states_counter) {
+
+    (*states_counter)++;
+
     // base case
     if (depth == 0 || get_game_state(b, pcolor).game_over) {
         return get_game_value(b, pcolor);
@@ -129,8 +133,8 @@ int minimax_recursion(struct Board *b, enum player_color pcolor, int depth, stru
             make_move(b, new_move);
 
             struct Move opponent_move;  // dummy - not used
-            //int new_board_value = minimax_recursion(&new_board, switch_turns(pcolor), depth-1, &opponent_move, output);
-            int new_board_value = minimax_recursion(b, switch_turns(pcolor), depth-1, &opponent_move, output);
+
+            int new_board_value = minimax_recursion(b, switch_turns(pcolor), depth-1, &opponent_move, states_counter);
             // update the best move found so far
             if (new_board_value < minimax || !found_any_move) {
                 minimax = new_board_value;
@@ -147,11 +151,21 @@ int minimax_recursion(struct Board *b, enum player_color pcolor, int depth, stru
 }
 
 struct Move minimax_ai_make_move(struct Board *b, enum player_color pcolor, int max_depth) {
-    FILE *log_output = fopen("log_output.txt", "a");
-
     struct Move best_move;
-    minimax_recursion(b, pcolor, max_depth, &best_move, log_output);
-    fclose(log_output);
+    int num_states_evaluated = 0;
+
+    minimax_recursion(b, pcolor, max_depth, &best_move, &num_states_evaluated);
+
+    static FILE *log_output_white_player = 0;
+    open_log_file(&log_output_white_player, "minimax_output_white_player.txt");
+    static FILE *log_output_black_player = 0;
+    open_log_file(&log_output_black_player, "minimax_output_black_player.txt");
+
+    FILE* log_output_current_player = (pcolor == white ? log_output_white_player : log_output_black_player);
+
+    // log the number of states evaluated at this move
+    fprintf(log_output_current_player, "%d\n", num_states_evaluated);
+    // fclose(log_output);
 
     return best_move;
 }

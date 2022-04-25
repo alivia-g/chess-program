@@ -1,4 +1,5 @@
-log_output.txt
+minimax_output_white_player.txt
+minimax_output_black_player.txt
 
 # Prerequisites
 *.d
