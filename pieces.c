@@ -1,7 +1,7 @@
 #include <assert.h>
-#include <stdlib.h>
-
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "board.h"
 #include "pieces.h"
@@ -291,6 +291,27 @@ struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum pl
     }
     moves.length = ptr;
     return moves;
+}
+
+// source: https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
+// randomly shuffle the movelist
+void shuffle_movelist(struct MoveList *move_list) {
+    time_t t;
+    srand((unsigned) time(&t));  // seed
+    for (int i = move_list->length - 1; i > 0; --i) {
+        int j = rand() % (i + 1);
+        // swap ith and jth move
+        struct Coordinate temp = move_list->coord[i];
+        move_list->coord[i] = move_list->coord[j];
+        move_list->coord[j] = temp;
+    }
+}
+
+// returns a randomly ordered list of valid moves
+struct MoveList get_randomized_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor) {
+    struct MoveList move_list = get_valid_moves(from, b, pcolor);
+    shuffle_movelist(&move_list);
+    return move_list;
 }
 
 // check if a player has any valid moves remaining on board

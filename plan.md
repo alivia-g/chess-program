@@ -40,4 +40,4 @@ Stage 8) Alpha-beta pruning (n-ply)
 Known bugs:
 - need to check that human moves are among the list of potential moves
 - fix the test files
-- implement coordinate to algebraic conversion(edited)
+- game state should be stalemate when there's no other pieces left other than the kings

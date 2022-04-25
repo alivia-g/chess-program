@@ -18,6 +18,11 @@ void add_move(struct MoveList *move_list, int r, int c);
 
 struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor);
 
+// randomly shuffle the movelist
+void shuffle_movelist(struct MoveList *move_list);
+
+struct MoveList get_randomized_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor);
+
 bool is_king_in_check(struct Board *b, enum player_color pcolor);
 
 bool is_move_valid(struct Coordinate from, struct Coordinate to, struct Board *b, enum player_color current_player);

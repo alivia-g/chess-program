@@ -45,7 +45,7 @@ struct Move greedy_ai_make_move(struct Board *b, enum player_color pcolor) {
             if (get_color(piece_type) != pcolor) { continue; }
 
             // get all its valid moves
-            struct MoveList valid_moves = get_valid_moves(new_move.from, b, pcolor);
+            struct MoveList valid_moves = get_randomized_valid_moves(new_move.from, b, pcolor);
 
             for (int i = 0; i < valid_moves.length; ++i) {
                 new_move.to = valid_moves.coord[i];
@@ -64,6 +64,7 @@ struct Move greedy_ai_make_move(struct Board *b, enum player_color pcolor) {
             }
         }
     }
+
     return best_move;
 }
 
@@ -87,7 +88,7 @@ int minimax_recursion(struct Board *b, enum player_color pcolor, int depth, stru
             if (get_color(piece_type) != pcolor) { continue; }
 
             // get all its valid moves
-            struct MoveList valid_moves = get_valid_moves(new_move.from, b, pcolor);
+            struct MoveList valid_moves = get_randomized_valid_moves(new_move.from, b, pcolor);
 
             for (int i = 0; i < valid_moves.length; ++i) {
                 new_move.to = valid_moves.coord[i];
