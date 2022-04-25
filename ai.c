@@ -5,6 +5,7 @@
 #include "analysis.h"
 #include "board.h"
 #include "pieces.h"
+#include "player.h"
 
 // assumes the game is not over
 struct Move random_ai_make_move(struct Board *b, enum player_color pcolor) {
@@ -63,5 +64,54 @@ struct Move greedy_ai_make_move(struct Board *b, enum player_color pcolor) {
             }
         }
     }
+    return best_move;
+}
+
+// returns the maximum value that the current player can get
+int minimax_recursion(struct Board *b, enum player_color pcolor, int depth, struct Move* best_move) {
+    // base case
+    if (depth == 0 || get_game_state(b, pcolor).game_over) {
+        return get_game_value(b, pcolor);
+    }
+
+    // general case
+    int minimax = INF;
+    for (int r = 0; r < 8; ++r) {
+        for (int c = 0; c < 8; ++c) {
+            struct Move new_move;
+            new_move.from.r = r;
+            new_move.from.c = c;
+
+            // if this piece is ours...
+            char piece_type = b->squares[new_move.from.r][new_move.from.c];
+            if (get_color(piece_type) != pcolor) { continue; }
+
+            // get all its valid moves
+            struct MoveList valid_moves = get_valid_moves(new_move.from, b, pcolor);
+
+            for (int i = 0; i < valid_moves.length; ++i) {
+                new_move.to = valid_moves.coord[i];
+
+                // consider the board position after making this move
+                struct Board new_board;
+                copy_board(b, &new_board);
+                make_move(&new_board, new_move);
+
+                struct Move opponent_move;  // dummy - not used
+                int new_board_value = minimax_recursion(&new_board, switch_turns(pcolor), depth-1, &opponent_move);
+                // update the best move found so far
+                if (new_board_value < minimax) {
+                    minimax = new_board_value;
+                    *best_move = new_move;
+                }
+            }
+        }
+    }
+    return -minimax;
+}
+
+struct Move minimax_ai_make_move(struct Board *b, enum player_color pcolor, int max_depth) {
+    struct Move best_move;
+    minimax_recursion(b, pcolor, max_depth, &best_move);
     return best_move;
 }

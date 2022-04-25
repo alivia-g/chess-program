@@ -10,4 +10,7 @@ struct Move random_ai_make_move(struct Board *b, enum player_color pcolor);
 // pick the best current one-ply move
 struct Move greedy_ai_make_move(struct Board *b, enum player_color pcolor);
 
+// pick the best move up to specified search depth
+struct Move minimax_ai_make_move(struct Board *b, enum player_color pcolor, int max_depth);
+
 #endif // AI_H

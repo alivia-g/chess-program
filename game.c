@@ -11,6 +11,7 @@
 #include "analysis.h"
 #include "board.h"
 #include "pieces.h"
+#include "player.h"
 #include "ui.h"
 #include "util.h"
 
@@ -39,9 +40,9 @@ struct Move ai_make_move(struct Board *b, enum player_color pcolor, char ai_type
         case 'g': {
             return greedy_ai_make_move(b, pcolor);
         }
-//        case 'm': {
-//            return minimax_ai_make_move(b, pcolor);
-//        }
+        case 'm': {
+            return minimax_ai_make_move(b, pcolor, 2);
+        }
 //        case 'a': {
 //            return alphabeta_ai_make_move(b, pcolor);
 //        }
@@ -160,11 +161,7 @@ int main() {
         display_board(&b, current_player);
         printf("\n");
         play_game(&b, current_player, white_player_type, black_player_type);
-        if (current_player == white) {
-            current_player = black;
-        } else if (current_player == black) {
-            current_player = white;
-        }
+        current_player = switch_turns(current_player);
     }
     display_board(&b, current_player);
 

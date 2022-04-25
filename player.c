@@ -9,3 +9,13 @@ bool valid_player_type(char player_type) {
     player_type == 'm' ||
     player_type == 'a';
 }
+
+enum player_color switch_turns(enum player_color pcolor) {
+    if (pcolor == black) {
+        return white;
+    } else if (pcolor == white) {
+        return black;
+    } else {
+        return none;
+    }
+}

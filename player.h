@@ -6,4 +6,6 @@ enum player_color {black, white, none};
 
 bool valid_player_type(char);
 
+enum player_color switch_turns(enum player_color);
+
 #endif  // PLAYER_H
