@@ -46,11 +46,24 @@ char* stringify_move(struct Move move) {
     return move_string;
 }
 
+// TODO: allow user to choose a different piece (bishop, knight, or rook) instead of queen
+void promote_pawn_to_queen(struct Board *b, struct Coordinate coord) {
+    // check for black pawn in 1st row
+    if (coord.r == 0 && b->squares[coord.r][coord.c] == BPAWN) {
+        b->squares[coord.r][coord.c] = BQUEEN;
+    }
+    // check for white pawn in 8th row
+    if (coord.r == 7 && b->squares[coord.r][coord.c] == WPAWN) {
+        b->squares[coord.r][coord.c] = WQUEEN;
+    }
+}
+
 char place_piece_with_algebraic_position(char piece, char *pos, struct Board *b) {
     struct Coordinate coord = algebraic_to_coordinate(pos);
     char old_piece = b->squares[coord.r][coord.c];
     // place piece on board
     b->squares[coord.r][coord.c] = piece;
+    promote_pawn_to_queen(b, coord);
     return old_piece;
 }
 
@@ -58,6 +71,7 @@ char place_piece_on_coordinate(char piece, struct Coordinate coord, struct Board
     char old_piece = b->squares[coord.r][coord.c];
     // place piece on board
     b->squares[coord.r][coord.c] = piece;
+    promote_pawn_to_queen(b, coord);
     return old_piece;
 }
 

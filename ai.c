@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <time.h>
-#include <stdio.h>  ///
 
 #include "ai.h"
 #include "analysis.h"
@@ -152,7 +151,6 @@ struct Move minimax_ai_make_move(struct Board *b, enum player_color pcolor, int 
 
     struct Move best_move;
     minimax_recursion(b, pcolor, max_depth, &best_move, log_output);
-    printf("minimax_ai_make_move(): best_move = %s\n", stringify_move(best_move));
     fclose(log_output);
 
     return best_move;
