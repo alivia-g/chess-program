@@ -241,8 +241,13 @@ bool is_king_in_check(struct Board *b, enum player_color pcolor) {
 
                 // check if the coordinate of the pcolor's King is contained in valid_moves
                 for (int i = 0; i < valid_moves.length; ++i) {
-                    if (coords_equal(king_coord, valid_moves.coord[i])) { return true; }  // King is under check
+                    if (coords_equal(king_coord, valid_moves.coord[i])) {
+                        clear_movelist(&valid_moves);
+                        return true;  // King is under check
+                    }
                 }
+                
+                clear_movelist(&valid_moves);
             }
         }
     }
@@ -278,7 +283,7 @@ bool is_move_valid(struct Coordinate from, struct Coordinate to, struct Board *b
     return valid;
 }
 
-// gets a list of valid moves for a piece at a coordinate on the board
+// gets a list of valid moves for a piece at a coordinate on the board	
 struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor) {
     struct MoveList moves = get_potential_moves(from, b);
 
@@ -301,6 +306,7 @@ struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum pl
     return moves;
 }
 
+
 // source: https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
 // randomly shuffle the movelist
 void shuffle_movelist(struct MoveList *move_list) {
@@ -319,7 +325,6 @@ void shuffle_movelist(struct MoveList *move_list) {
 struct MoveList get_shuffled_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor) {
     struct MoveList move_list = get_valid_moves(from, b, pcolor);
     shuffle_movelist(&move_list);
-
     return move_list;
 }
 
@@ -330,9 +335,13 @@ bool player_has_valid_moves(struct Board *b, enum player_color pcolor) {
         coord.r = r;
         for (int c = 0; c < 8; ++c) {
             coord.c = c;
-            if (get_color(b->squares[r][c]) == pcolor
-                 && get_valid_moves(coord, b, pcolor).length >= 1) {
-                return true;
+            if (get_color(b->squares[r][c]) == pcolor) {
+                struct MoveList valid_moves = get_valid_moves(coord, b, pcolor);
+                bool has_valid_moves = valid_moves.length >= 1;
+                clear_movelist(&valid_moves);
+                if (has_valid_moves) {
+                    return true;
+                }
             }
         }
     }
