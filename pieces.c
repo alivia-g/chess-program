@@ -11,8 +11,11 @@
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 #define max(x, y) (((x) > (y)) ? (x) : (y))
 
-void initialize_movelist(struct MoveList *move_list) {
-    move_list->length = 0;
+void initialize_movelist(struct MoveList *move_list, int length) {
+    move_list->length = length;
+    if (length > 0) {
+        move_list->coord = (struct Coordinate*) malloc(length * sizeof(struct Coordinate));
+    }
 }
 
 void add_move(struct MoveList *move_list, int r, int c) {
@@ -24,6 +27,11 @@ void add_move(struct MoveList *move_list, int r, int c) {
     move_list->coord[move_list->length].r = r;
     move_list->coord[move_list->length].c = c;
     ++(move_list->length);
+}
+
+void clear_movelist(struct MoveList *move_list) {
+    free(move_list->coord);
+    move_list->length = 0;
 }
 
 void get_bishop_moves(struct Coordinate from, struct Board *b, struct MoveList *to);
@@ -40,7 +48,7 @@ Return:
 struct MoveList get_potential_moves(struct Coordinate from, struct Board *b) {
     char piece_type = b->squares[from.r][from.c];
     struct MoveList to;
-    initialize_movelist(&to);
+    initialize_movelist(&to, 0);
     assert(to.length == 0);
 
     if (piece_type == BKNIGHT || piece_type == WKNIGHT) {
@@ -134,14 +142,14 @@ struct MoveList get_potential_moves(struct Coordinate from, struct Board *b) {
 // function to get an array of valid bishop moves
 void get_bishop_moves(struct Coordinate from, struct Board *b, struct MoveList *to) {
     // bishop moving left-up diagonal
-    for (int c = from.c - 1, r = from.r + 1; c >= 0, r < 8; --c, ++r) {
+    for (int c = from.c - 1, r = from.r + 1; c >= 0 && r < 8; --c, ++r) {
         add_move(to, r, c);
         if (b->squares[r][c] != EMPTY) {
             break;
         }
     }
     // bishop moving right-down diagonal
-    for (int c = from.c + 1, r = from.r - 1; c < 8, r >= 0; ++c, --r) {
+    for (int c = from.c + 1, r = from.r - 1; c < 8 && r >= 0; ++c, --r) {
         add_move(to, r, c);
         if (b->squares[r][c] != EMPTY) {
             break;
@@ -271,6 +279,29 @@ bool is_move_valid(struct Coordinate from, struct Coordinate to, struct Board *b
 }
 
 // gets a list of valid moves for a piece at a coordinate on the board
+//struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor) {
+//    struct MoveList moves = get_potential_moves(from, b);
+//
+//    char piece_type = b->squares[from.r][from.c];
+//    if (piece_type == EMPTY) {
+//        moves.length = 0;
+//        moves.coord = NULL;
+//        return moves;
+//    }
+//
+//    // filter potential moves array to remove invalid moves
+//    int ptr = 0;  // marks the index of right-most valid move in moves array
+//    for (int i = 0; i < moves.length; ++i) {
+//        if (is_move_valid(from, moves.coord[i], b, pcolor)) {
+//            moves.coord[ptr] = moves.coord[i];
+//            ++ptr;
+//        }
+//    }
+//    moves.length = ptr;
+//    return moves;
+//}
+
+
 struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor) {
     struct MoveList moves = get_potential_moves(from, b);
 
@@ -293,6 +324,7 @@ struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum pl
     return moves;
 }
 
+
 // source: https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
 // randomly shuffle the movelist
 void shuffle_movelist(struct MoveList *move_list) {
@@ -308,9 +340,10 @@ void shuffle_movelist(struct MoveList *move_list) {
 }
 
 // returns a randomly ordered list of valid moves
-struct MoveList get_randomized_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor) {
+struct MoveList get_shuffled_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor) {
     struct MoveList move_list = get_valid_moves(from, b, pcolor);
     shuffle_movelist(&move_list);
+
     return move_list;
 }
 

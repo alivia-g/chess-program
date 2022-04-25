@@ -1,6 +1,8 @@
 #ifndef PIECES_H
 #define PIECES_H
 
+#include <stdio.h>
+
 #include "board.h"
 #include "player.h"
 #include "util.h"
@@ -10,18 +12,19 @@ struct MoveList {
     struct Coordinate* coord;
 };
 
-// TODO: add destructor for MoveList
-
-void initialize_movelist(struct MoveList *move_list);
+void initialize_movelist(struct MoveList *move_list, int length);
 
 void add_move(struct MoveList *move_list, int r, int c);
+
+// destructor for MoveList
+void clear_movelist(struct MoveList *move_list);
 
 struct MoveList get_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor);
 
 // randomly shuffle the movelist
 void shuffle_movelist(struct MoveList *move_list);
 
-struct MoveList get_randomized_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor);
+struct MoveList get_shuffled_valid_moves(struct Coordinate from, struct Board *b, enum player_color pcolor);
 
 bool is_king_in_check(struct Board *b, enum player_color pcolor);
 

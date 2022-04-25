@@ -49,6 +49,7 @@ struct Move ai_make_move(struct Board *b, enum player_color pcolor, char ai_type
         default:
             printf("Invalid AI type: ai_make_move Error.");
     }
+    exit(-1);
 }
 
 void print_game_info(struct Board *b, enum player_color current_player, char player_type, struct Move last_move, int ai_difficulty) {
