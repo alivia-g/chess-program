@@ -4,6 +4,8 @@ minimax_output_black_player.txt
 alphabeta_output_black_player.txt
 alphabeta_output_white_player.txt
 
+moves_played.txt
+
 # Prerequisites
 *.d
 

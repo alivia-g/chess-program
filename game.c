@@ -93,7 +93,7 @@ void print_game_info(struct Board *b, enum player_color current_player, char pla
 }
 
 // turn-based game
-void play_game(struct Board *b, enum player_color current_player, char white_player, char black_player, int white_difficulty, int black_difficulty) {
+void play_game(struct Board *b, enum player_color current_player, char white_player, char black_player, int white_difficulty, int black_difficulty, FILE* log_output) {
     struct Move new_move;
     do {
         if (current_player == white) {  // white's turn
@@ -113,7 +113,7 @@ void play_game(struct Board *b, enum player_color current_player, char white_pla
     } while (!is_move_valid(new_move.from, new_move.to, b, current_player));
 
     //printf("from %d,%d to %d,%d\n", new_move.from.r, new_move.from.c, new_move.to.r, new_move.to.c);
-
+    fprintf(log_output, "%s\n", stringify_move(new_move));
     make_move(b, new_move);
 
     char player_type = current_player == white ? white_player : black_player;
@@ -161,6 +161,8 @@ void initialize_board(struct Board* b) {
 }
 
 int main() {
+    FILE* log_output = fopen("moves_played.txt", "w");
+
     printf("Choose player type for white:\nHuman(h)\nRandom(r)\nGreedy(g)\nMinimax(m)\nAlpha-beta(a)\n");
     char white_player_type = get_player_type();
     int white_difficulty = get_ai_difficulty(white_player_type);
@@ -180,7 +182,7 @@ int main() {
     while(!get_game_state(&b, current_player).game_over) {
         display_board(&b, current_player);
         printf("\n");
-        play_game(&b, current_player, white_player_type, black_player_type, white_difficulty, black_difficulty);
+        play_game(&b, current_player, white_player_type, black_player_type, white_difficulty, black_difficulty, log_output);
         current_player = switch_turns(current_player);
     }
     display_board(&b, current_player);
@@ -196,6 +198,8 @@ int main() {
     } else {
         printf("get_game_state Error.");
     }
+
+    fclose(log_output);
 
     return 0;
 }
