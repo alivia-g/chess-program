@@ -1,3 +1,6 @@
+all: linux_io linux_tester
+
+
 ai.o: ai.c analysis.o board.o pieces.o player.o util.o
 	gcc -c ai.c -o ai.o
 
@@ -29,6 +32,3 @@ linux_tester.o: linux_tester.c ai.o analysis.o board.o pieces.o player.o util.o
 
 linux_tester: linux_tester.o ai.o analysis.o board.o pieces.o player.o util.o
 	gcc -o linux_tester linux_tester.o ai.o analysis.o board.o pieces.o player.o util.o
-
-
-all: linux_io linux_tester

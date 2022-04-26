@@ -194,6 +194,7 @@ int main() {
     } else {
         printf("get_game_state Error.");
     }
+    printf("\n");
 
     fclose(log_output);
 
