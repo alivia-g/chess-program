@@ -1,5 +1,5 @@
-#ifndef UI_H
-#define UI_H
+#ifndef WINDOWS_UI_H
+#define WINDOWS_UI_H
 
 #include <windows.h>
 
@@ -18,4 +18,4 @@ static const int SILVER_BACKGROUND = BACKGROUND_INTENSITY;
 
 void display_board(struct Board* b, enum player_color player);
 
-#endif // UI_H
+#endif // WINDOWS_UI_H

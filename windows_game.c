@@ -1,5 +1,5 @@
-// to build: $ gcc -c game.c -o game.o
-//           $ gcc ai.o analysis.o board.o pieces.o player.o ui.o util.o game.o -o game
+// to build: $ gcc -c windows_game.c -o windows_game.o
+//           $ gcc ai.o analysis.o board.o pieces.o player.o util.o windows_ui.o windows_game.o -o windows_game
 
 #include <assert.h>
 #include <ctype.h>
@@ -12,8 +12,8 @@
 #include "board.h"
 #include "pieces.h"
 #include "player.h"
-#include "ui.h"
 #include "util.h"
+#include "windows_ui.h"
 
 struct Move human_make_move() {
     struct Move new_move;
