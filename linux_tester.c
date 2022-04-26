@@ -1,9 +1,10 @@
-// to build: $ make linux_io
+// to build: $ make linux_tester
 
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #include "ai.h"
@@ -12,22 +13,6 @@
 #include "pieces.h"
 #include "player.h"
 #include "util.h"
-
-struct Move human_make_move() {
-    struct Move new_move;
-
-    char from[3];
-    printf("Enter the location of the piece that you want to move: ");
-    scanf("%s", from);
-    new_move.from = algebraic_to_coordinate(from);
-
-    char to[3];
-    printf("Enter where you want to place the selected piece: ");
-    scanf("%s", to);
-    new_move.to = algebraic_to_coordinate(to);
-
-    return new_move;
-}
 
 struct Move ai_make_move(struct Board *b, enum player_color pcolor, char ai_type, int difficulty) {
     ai_type = tolower(ai_type);
@@ -95,18 +80,10 @@ void play_game(struct Board *b, enum player_color current_player, char white_pla
     struct Move new_move;
     do {
         if (current_player == white) {  // white's turn
-            if (white_player == 'h') {
-                new_move = human_make_move();
-            } else {
-                new_move = ai_make_move(b, current_player, white_player, white_difficulty);
-            }
+            new_move = ai_make_move(b, current_player, white_player, white_difficulty);
         }
         if (current_player == black) {  // black's turn
-            if (black_player == 'h') {
-                new_move = human_make_move();
-            } else {
-                new_move = ai_make_move(b, current_player, black_player, black_difficulty);
-            }
+            new_move = ai_make_move(b, current_player, black_player, black_difficulty);
         }
     } while (!is_move_valid(new_move.from, new_move.to, b, current_player));
 
@@ -119,70 +96,53 @@ void play_game(struct Board *b, enum player_color current_player, char white_pla
     print_game_info(b, current_player, player_type, new_move, ai_difficulty);
 }
 
-int get_ai_difficulty(char player_type) {
-    // check for special cases
-    if (player_type == 'h') return -1;
-    if (player_type == 'r') return 0;
-    if (player_type == 'g') return 1;
-
+// only for minimax and alpha-beta
+int get_ai_difficulty(FILE* file_input) {
     int num_plies = 0;
-    while (num_plies <= 0) {
-        printf("Enter AI difficulty (i.e. number of plies): ");
-        scanf("%d", &num_plies);
-        getchar();
-    }
+    fscanf(file_input, "%d", &num_plies);
+
     return num_plies;
 }
 
-char get_player_type() {
-    char player_type = 0;
-    while (!valid_player_type(player_type)) {
-        scanf("%c", &player_type);
-        getchar();
-        player_type = tolower(player_type);
-    }
-    return player_type;
-}
-
-void initialize_board(struct Board* b) {
-    char board_type = 0;
-    while (board_type != 'd' && board_type != 'c') {
-        scanf("%c", &board_type);
-        getchar();
-        board_type = tolower(board_type);
-    }
-    if (board_type == 'd') {
-        initialize_default_board(b);
-    } else if (board_type == 'c') {
-        initialize_custom_board(b);
+void initialize_board(struct Board* b, FILE* file_input) {
+    for (int r = 7; r >= 0; --r) {
+        char row[9];
+        fgetc(file_input);  // get rid of '\n'
+        fgets(row, 9, file_input);
+        assert(strlen(row) == 8);
+        for (int c = 0; c < 8; ++c) {
+            b->squares[r][c] = row[c];
+        }
     }
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        printf("Wrong number of command line arguments.\n");
+        printf("Usage: ./linux_tester test_data/[input_file.txt]\n");
+        return -1;
+    }
+    FILE* input_test_data = fopen(argv[1], "r");
+
     FILE* log_output = fopen("moves_played.txt", "w");
 
-    printf("Choose player type for white:\nHuman(h)\nRandom(r)\nGreedy(g)\nMinimax(m)\nAlpha-beta(a)\n");
-    char white_player_type = get_player_type();
-    int white_difficulty = get_ai_difficulty(white_player_type);
-    assert(valid_player_type(white_player_type));
-
-    printf("Choose player type for black:\nHuman(h)\nRandom(r)\nGreedy(g)\nMinimax(m)\nAlpha-beta(a)\n");
-    char black_player_type = get_player_type();
-    int black_difficulty = get_ai_difficulty(black_player_type);
-    assert(valid_player_type(black_player_type));
-
+    int difficulty = get_ai_difficulty(input_test_data);
+    
+    // number of plies to play
+    int game_length = 0;
+    fscanf(input_test_data, "%d", &game_length);
+    
     // initialize board
     struct Board b;
     clear(&b);
-    printf("Choose board type: Default(d)/Custom(c)\n");
-    initialize_board(&b);
+    initialize_board(&b, input_test_data);
     enum player_color current_player = white;
-    while(!get_game_state(&b, current_player).game_over) {
+    while (game_length-- > 0 && !get_game_state(&b, current_player).game_over) {
         printf("\n");
-        play_game(&b, current_player, white_player_type, black_player_type, white_difficulty, black_difficulty, log_output);
+        play_game(&b, current_player, 'a', 'a', difficulty, difficulty, log_output);
         current_player = switch_turns(current_player);
     }
-
+    
     // print game result
     int game_result = get_game_state(&b, white).special_value;
     if (game_result == 0) {
@@ -191,11 +151,11 @@ int main() {
         printf("Black won!");
     } else if (game_result == INF) {
         printf("White won!");
-    } else {
-        printf("get_game_state Error.");
     }
+    printf("\n");
 
     fclose(log_output);
+    fclose(input_test_data);
 
     return 0;
 }

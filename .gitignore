@@ -8,6 +8,8 @@ moves_played.txt
 
 linux_io
 
+.vscode/
+
 # Prerequisites
 *.d
 

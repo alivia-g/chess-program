@@ -16,8 +16,19 @@ player.o: player.c
 util.o: util.c
 	gcc -c util.c -o util.o
 
+
 linux_io.o: linux_io.c ai.o analysis.o board.o pieces.o player.o util.o
 	gcc -c linux_io.c -o linux_io.o
 
 linux_io: linux_io.o ai.o analysis.o board.o pieces.o player.o util.o
 	gcc -o linux_io linux_io.o ai.o analysis.o board.o pieces.o player.o util.o
+
+
+linux_tester.o: linux_tester.c ai.o analysis.o board.o pieces.o player.o util.o
+	gcc -c linux_tester.c -o linux_tester.o
+
+linux_tester: linux_tester.o ai.o analysis.o board.o pieces.o player.o util.o
+	gcc -o linux_tester linux_tester.o ai.o analysis.o board.o pieces.o player.o util.o
+
+
+all: linux_io linux_tester

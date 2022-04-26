@@ -1,8 +1,10 @@
-       k
- pr    q
-p    N  
-    PQ  
-  nn P  
-        
-PP     P
-      RK
+2
+2
+k       
+pp      
+ p      
+    qr p
+      B 
+      P 
+      PP
+      BK
