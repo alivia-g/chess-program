@@ -1,10 +1,10 @@
 #include <assert.h>
+#include <stdbool.h>
 
 #include "analysis.h"
 #include "board.h"
 #include "pieces.h"
 #include "player.h"
-#include "stdbool.h"
 
 // returns information on if the game is over and the game state value
 struct GameState get_game_state(struct Board *b, enum player_color curr_player) {

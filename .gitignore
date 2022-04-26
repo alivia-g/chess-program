@@ -6,6 +6,8 @@ alphabeta_output_white_player.txt
 
 moves_played.txt
 
+linux_io
+
 # Prerequisites
 *.d
 
