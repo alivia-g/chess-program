@@ -43,9 +43,9 @@ struct Move ai_make_move(struct Board *b, enum player_color pcolor, char ai_type
         case 'm': {
             return minimax_ai_make_move(b, pcolor, difficulty);
         }
-//        case 'a': {
-//            return alphabeta_ai_make_move(b, pcolor, difficulty);
-//        }
+        case 'a': {
+            return alphabeta_ai_make_move(b, pcolor, difficulty);
+        }
         default:
             printf("Invalid AI type: ai_make_move Error.");
     }
